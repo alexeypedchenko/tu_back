@@ -51,6 +51,11 @@ export default {
           icon: 'mdi-account',
           link: '/profile'
         },
+        {
+          title: 'Places',
+          icon: 'mdi-account-group-outline',
+          link: '/places'
+        },
       ],
       mini: false,
     }

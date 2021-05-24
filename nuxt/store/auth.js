@@ -7,7 +7,6 @@ export const mutations = {
     state.user = null
   },
   SIGN_IN(state, authUser) {
-    console.log('authUser:', authUser)
     const {
       uid,
       email,
