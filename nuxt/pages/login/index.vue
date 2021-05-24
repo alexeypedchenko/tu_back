@@ -56,8 +56,8 @@ export default {
   data() {
     return {
       fields: {
-        email: 'user@mail.com',
-        password: '123456',
+        email: '',
+        password: '',
       },
       rules: {
         emptyRules: [

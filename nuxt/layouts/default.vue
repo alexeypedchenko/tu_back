@@ -1,16 +1,32 @@
 <template>
-  <div class="v-application">
+  <v-app>
+    <app-navigation />
+
+    <app-header />
+
     <v-main>
-      <Nuxt />
+      <div class="pa-5">
+        <Nuxt />
+      </div>
     </v-main>
-  </div>
+  </v-app>
 </template>
 
+
+
 <script>
+import Navigation from '~/components/Navigation'
+import Header from '~/components/Header'
 export default {
-  middleware: 'auth'
+  components: {
+    AppHeader: Header,
+    AppNavigation: Navigation,
+  },
+  middleware: 'auth',
 }
 </script>
 
-<style>
+<style lang="scss">
+.page-enter-active, .page-leave-active { transition: opacity .25s; }
+.page-enter, .page-leave-active { opacity: 0; }
 </style>
