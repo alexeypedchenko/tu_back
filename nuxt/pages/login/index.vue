@@ -83,8 +83,7 @@ export default {
       const {email, password} = this.fields
       await userSignIn(email, password)
         .then((authUser) => {
-          console.log('authUser:', authUser)
-          setUser(this.$store, user)
+          setUser(this.$store, authUser)
           this.$router.push('/')
         })
         .catch((err) => {
