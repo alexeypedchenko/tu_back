@@ -1,6 +1,9 @@
 <template>
   <div class="place-add">
-    place-add
+    <h2 class="text-h4 mb-10">
+      Добавить новое место
+    </h2>
+
     <place-form />
   </div>
 </template>

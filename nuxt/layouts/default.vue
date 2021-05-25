@@ -12,11 +12,10 @@
   </v-app>
 </template>
 
-
-
 <script>
 import Navigation from '~/components/Navigation'
 import Header from '~/components/Header'
+
 export default {
   components: {
     AppHeader: Header,

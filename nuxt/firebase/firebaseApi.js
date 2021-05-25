@@ -8,6 +8,7 @@ const placesCollection = db.collection('places')
 export const getPlaces = async () => {
   return new Promise((res, rej) => {
     placesCollection
+      .orderBy('edited', 'desc')
       .get()
       .then((querySnapshot) => {
         const places = []
@@ -23,7 +24,11 @@ export const getPlaces = async () => {
 }
 
 export const createPlace = async (place) => {
-  return await placesCollection.add(place)
+  return new Promise((res, rej) => {
+    placesCollection.add(place)
+      .then((docRef) => res(docRef.id))
+      .catch((err) => rej(err))
+  })
 }
 
 export const getPlace = async (id) => {
@@ -36,7 +41,11 @@ export const updatePlace = async (id, place) => {
 }
 
 export const deletePlace = async (id) => {
-  return await placesCollection.doc(id).delete()
+  return new Promise((res, rej) => {
+    placesCollection.doc(id).delete()
+      .then(() => res())
+      .catch((err) => rej(err))
+  })
 }
 
 

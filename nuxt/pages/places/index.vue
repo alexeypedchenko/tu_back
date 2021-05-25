@@ -8,9 +8,11 @@
       <h2 class="text-h2">
         Places
       </h2>
+
       <v-btn
         text
         color="success"
+        @click="$router.push('/places/add')"
       >
         add new place
       </v-btn>
@@ -18,20 +20,64 @@
 
     <v-data-table
       :headers="headers"
-      :items="places"
+      :items="list"
       :loading="loading"
       :items-per-page="5"
-    ></v-data-table>
+    >
+      <template
+        v-slot:item.actions="{ item }"
+      >
+        <v-btn color="primary" icon class="mr-2" @click="editItem(item)">
+          <v-icon>
+            mdi-pencil
+          </v-icon>
+        </v-btn>
+        <v-btn color="error" icon @click="openDialog(item)">
+          <v-icon>
+            mdi-delete
+          </v-icon>
+        </v-btn>
+      </template>
+    </v-data-table>
+
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <v-card>
+        <v-card-title class="headline lighten-2">
+          Удалить {{ this.itemId }}?
+        </v-card-title>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="error"
+            text
+            @click="deleteItem"
+          >
+            Delete
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import { getPlaces } from '~/firebase/firebaseApi'
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
-      places: [],
-      loading: true,
       headers: [
         {
           text: 'Id',
@@ -43,23 +89,35 @@ export default {
           sortable: false,
           value: 'name',
         },
+        {
+          text: 'Actions',
+          value: 'actions',
+          sortable: false
+        },
       ],
+      dialog: false,
+      itemId: null,
     }
   },
-  mounted() {
-    this.getPlaces()
+  computed: {
+    ...mapState('places', [
+      'loading',
+      'list',
+    ])
   },
   methods: {
-    async getPlaces() {
-      await getPlaces()
-        .then((res) => {
-          this.places = res
-          console.log('this.places:', this.places)
-          setTimeout(() => {
-            this.loading = false
-          }, 100);
-        })
-    }
+    editItem({_id}) {
+      console.log('_id:', _id)
+      // this.$store.dispatch('places/getPlaces')
+    },
+    openDialog({_id}) {
+      this.dialog = true
+      this.itemId = _id
+    },
+    deleteItem() {
+      this.$store.dispatch('places/deletePlace', this.itemId)
+      this.dialog = false
+    },
   }
 }
 </script>
