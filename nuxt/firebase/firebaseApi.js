@@ -37,7 +37,13 @@ export const getPlace = async (id) => {
 }
 
 export const updatePlace = async (id, place) => {
-  return await placesCollection.doc(id).update(place)
+  return new Promise((res, rej) => {
+    placesCollection
+      .doc(id)
+      .update(place)
+      .then(() => res())
+      .catch((err) => rej(err))
+  })
 }
 
 export const deletePlace = async (id) => {

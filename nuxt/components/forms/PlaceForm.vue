@@ -21,13 +21,26 @@
         label="Описание"
         required
       />
-      <v-btn
-        type="submit"
-        color="primary"
-        :loading="loading"
-      >
-        Отправить
-      </v-btn>
+      <v-row justify="space-between" class="ma-0">
+        <v-btn
+          type="submit"
+          color="primary"
+          :loading="loading"
+        >
+          <template v-if="isUpdate">
+            Сохранить
+          </template>
+          <template v-else>
+            Отправить
+          </template>
+        </v-btn>
+        <v-btn
+          color="error"
+          @click="$router.push('/places')"
+        >
+          Назад
+        </v-btn>
+      </v-row>
     </v-form>
   </div>
 </template>
@@ -37,6 +50,16 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'PlaceForm',
+  props: {
+    isUpdate: {
+      type: Boolean,
+      default: false,
+    },
+    incomingPlace: {
+      type: Object,
+      default: () => ({})
+    },
+  },
   data() {
     return {
       place: {
@@ -66,12 +89,21 @@ export default {
     ...mapState('places', [
       'loading',
       'list',
-    ])
+    ]),
+  },
+  mounted() {
+    if (this.isUpdate) {
+      this.place = JSON.parse(JSON.stringify(this.incomingPlace))
+    }
   },
   methods: {
     submit() {
-      this.place.edited = new Date(),
-      this.$store.dispatch('places/createPlace', this.place)
+      this.place.edited = new Date()
+      if (this.isUpdate) {
+        this.$store.dispatch('places/updatePlace', this.place)
+      } else {
+        this.$store.dispatch('places/createPlace', this.place)
+      }
     }
   }
 }

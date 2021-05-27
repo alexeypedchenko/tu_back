@@ -1,7 +1,13 @@
 <template>
   <div class="place">
-    place: {{ id }}
-    <place-form :place="place"/>
+    <h2 class="text-h4 mb-10">
+      Изменить {{ place.name }}
+    </h2>
+
+    <place-form
+      :isUpdate="true"
+      :incomingPlace="place"
+    />
   </div>
 </template>
 
@@ -13,12 +19,9 @@ export default {
     PlaceForm,
   },
   computed: {
-    id() {
-      return this.$route.params.id
-    },
     place() {
-      return {}
-    }
+      return this.$store.state.places.list.find((place) => place._id === this.$route.params.id)
+    },
   }
 }
 </script>

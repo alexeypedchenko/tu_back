@@ -107,8 +107,7 @@ export default {
   },
   methods: {
     editItem({_id}) {
-      console.log('_id:', _id)
-      // this.$store.dispatch('places/getPlaces')
+      this.$router.push(`/places/${_id}`)
     },
     openDialog({_id}) {
       this.dialog = true
