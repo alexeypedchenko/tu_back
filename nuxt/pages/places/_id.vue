@@ -1,10 +1,7 @@
 <template>
   <div class="place">
-    <h2 class="text-h4 mb-10">
-      Изменить {{ place.name }}
-    </h2>
-
     <place-form
+      :formTitle="`Изменить ${place.name}`"
       :isUpdate="true"
       :incomingPlace="place"
     />

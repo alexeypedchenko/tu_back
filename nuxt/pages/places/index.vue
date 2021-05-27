@@ -10,10 +10,12 @@
       </h2>
 
       <v-btn
-        text
         color="success"
         @click="$router.push('/places/add')"
       >
+        <v-icon left>
+          mdi-plus
+        </v-icon>
         add new place
       </v-btn>
     </v-row>
