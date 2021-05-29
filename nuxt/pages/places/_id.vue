@@ -1,5 +1,5 @@
 <template>
-  <div class="place">
+  <div>
     <place-form
       :formTitle="`Изменить ${place.name}`"
       :isUpdate="true"

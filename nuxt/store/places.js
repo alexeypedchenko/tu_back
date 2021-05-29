@@ -6,6 +6,7 @@ import {
 } from '~/firebase/firebaseApi'
 
 export const state = () => ({
+  dataLoaded: false,
   loading: false,
   list: [],
 })
@@ -30,6 +31,10 @@ export const actions = {
         commit('mutate', {
           property: 'list',
           with: data
+        })
+        commit('mutate', {
+          property: 'dataLoaded',
+          with: true
         })
       })
       .catch((err) => console.log('err:', err))

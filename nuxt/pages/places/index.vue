@@ -20,76 +20,58 @@
       </v-btn>
     </v-row>
 
-    <v-data-table
+    <data-table
+      v-if="list && list.length"
       :headers="headers"
-      :items="list"
+      :list="list"
       :loading="loading"
-      :items-per-page="5"
-    >
-      <template
-        v-slot:item.actions="{ item }"
-      >
-        <v-btn color="primary" icon class="mr-2" @click="editItem(item)">
-          <v-icon>
-            mdi-pencil
-          </v-icon>
-        </v-btn>
-        <v-btn color="error" icon @click="openDialog(item)">
-          <v-icon>
-            mdi-delete
-          </v-icon>
-        </v-btn>
-      </template>
-    </v-data-table>
-
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <v-card>
-        <v-card-title class="headline lighten-2">
-          Удалить {{ this.itemId }}?
-        </v-card-title>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="error"
-            text
-            @click="deleteItem"
-          >
-            Delete
-          </v-btn>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            Cancel
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      editUrl="/places"
+      @delete="deleteItem"
+    />
   </div>
 </template>
 
 <script>
+import DataTable from '~/components/DataTable'
 import { mapState } from 'vuex'
 
 export default {
+  async fetch ({store}) {
+    const {dataLoaded} = store.state.places
+    if (!dataLoaded) {
+      await store.dispatch('places/getPlaces')
+    }
+  },
+  components: {
+    DataTable,
+  },
   data() {
     return {
       headers: [
         {
-          text: 'Id',
-          sortable: false,
-          value: '_id',
+          text: 'Is published',
+          value: 'public',
+          sortable: true,
         },
         {
-          text: 'name',
+          text: 'Created',
+          value: 'created',
+          sortable: true,
+        },
+        {
+          text: 'Edited',
+          value: 'edited',
+          sortable: true,
+        },
+        {
+          text: 'Id',
+          value: '_id',
           sortable: false,
+        },
+        {
+          text: 'Name',
           value: 'name',
+          sortable: false,
         },
         {
           text: 'Actions',
@@ -97,8 +79,6 @@ export default {
           sortable: false
         },
       ],
-      dialog: false,
-      itemId: null,
     }
   },
   computed: {
@@ -108,16 +88,8 @@ export default {
     ])
   },
   methods: {
-    editItem({_id}) {
-      this.$router.push(`/places/${_id}`)
-    },
-    openDialog({_id}) {
-      this.dialog = true
-      this.itemId = _id
-    },
-    deleteItem() {
-      this.$store.dispatch('places/deletePlace', this.itemId)
-      this.dialog = false
+    deleteItem(id) {
+      this.$store.dispatch('places/deletePlace', id)
     },
   }
 }

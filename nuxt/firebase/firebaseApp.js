@@ -9,13 +9,13 @@ import 'firebase/storage'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyD-GLmNT05ULDkRXB0OmnN3CoF201r3oBk',
-  authDomain: 'travel-ukraine-a7120.firebaseapp.com',
-  projectId: 'travel-ukraine-a7120',
-  storageBucket: 'travel-ukraine-a7120.appspot.com',
-  messagingSenderId: '533561204645',
-  appId: '1:533561204645:web:c22c030a5061fc7bee924c',
-  measurementId: 'G-R6NGFQWGQX'
+  apiKey: 'AIzaSyDBNwlNCBUi3f2ZykKYkuS8h_uXvUKU68E',
+  authDomain: 't-ukraine.firebaseapp.com',
+  projectId: 't-ukraine',
+  storageBucket: 't-ukraine.appspot.com',
+  messagingSenderId: '1049075273273',
+  appId: '1:1049075273273:web:1066884ccca3d1fc24c7e8',
+  measurementId: 'G-G5ZK52HGYL',
 }
 
 // что бы избежать двойной инициализации firebase

@@ -8,15 +8,17 @@ const placesCollection = db.collection('places')
 export const getPlaces = async () => {
   return new Promise((res, rej) => {
     placesCollection
-      .orderBy('edited', 'desc')
+      .orderBy('created', 'desc')
       .get()
       .then((querySnapshot) => {
+        if (querySnapshot.size === 0) res([]) // возвращаем пустой массив
         const places = []
-          querySnapshot.forEach((doc) => {
-            const place = doc.data()
-            place._id = doc.id
-            places.push(place)
-            res(places)
+        querySnapshot.forEach((doc) => {
+          if (!doc.exists) return []
+          const place = doc.data()
+          place._id = doc.id
+          places.push(place)
+          res(places)
         })
       })
       .catch((err) => rej(err))
