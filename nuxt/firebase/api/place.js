@@ -1,53 +1,54 @@
 import firebase from '~/firebase/firebaseApp'
 
 const db = firebase.firestore()
+const placesCollection = db.collection('places')
 
-export const getCollection = async (collection) => {
+export const getPlaces = async () => {
   return new Promise((res, rej) => {
-    db.collection(collection)
-      // .orderBy('created', 'desc')
+    placesCollection
+      .orderBy('created', 'desc')
       .get()
       .then((querySnapshot) => {
         if (querySnapshot.size === 0) res([]) // возвращаем пустой массив
-        const items = []
+        const places = []
         querySnapshot.forEach((doc) => {
           if (!doc.exists) return []
-          const item = doc.data()
-          item._id = doc.id
-          items.push(item)
-          res(items)
+          const place = doc.data()
+          place._id = doc.id
+          places.push(place)
+          res(places)
         })
       })
       .catch((err) => rej(err))
   })
 }
 
-export const createDoc = async (collection, item) => {
+export const createPlace = async (place) => {
   return new Promise((res, rej) => {
-    db.collection(collection).add(item)
+    placesCollection.add(place)
       .then((docRef) => res(docRef.id))
       .catch((err) => rej(err))
   })
 }
 
-export const getDoc = async (collection, id) => {
-  const item = await db.collection(collection).doc(id).get()
-  return item.exists ? item.data() : null
+export const getPlace = async (id) => {
+  const place = await placesCollection.doc(id).get()
+  return place.exists ? place.data() : null
 }
 
-export const updateDoc = async (collection, id, item) => {
+export const updatePlace = async (id, place) => {
   return new Promise((res, rej) => {
-    db.collection(collection)
+    placesCollection
       .doc(id)
-      .update(item)
+      .update(place)
       .then(() => res())
       .catch((err) => rej(err))
   })
 }
 
-export const deleteDoc = async (collection, id) => {
+export const deletePlace = async (id) => {
   return new Promise((res, rej) => {
-    db.collection(collection).doc(id).delete()
+    placesCollection.doc(id).delete()
       .then(() => res())
       .catch((err) => rej(err))
   })

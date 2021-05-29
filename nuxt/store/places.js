@@ -3,7 +3,7 @@ import {
   createPlace,
   deletePlace,
   updatePlace,
-} from '~/firebase/firebaseApi'
+} from '~/firebase/api/place'
 
 export const state = () => ({
   dataLoaded: false,

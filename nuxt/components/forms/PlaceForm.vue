@@ -66,7 +66,7 @@
         <!-- описание -->
         <v-tab-item transition="fade-transition">
           <v-row>
-            <v-col>
+            <v-col cols="6">
               <v-text-field
                 v-model="place.name"
                 label="Название места"
@@ -105,8 +105,18 @@
                 chips
               />
             </v-col>
-            <v-col>
-              Изображение
+            <v-col cols="6">
+              <v-file-input
+                accept="image/*"
+                label="Изображение"
+                @change="fileInputChange"
+              />
+              <v-img
+                contain
+                max-height="300"
+                max-width="100%"
+                :src="localFiles.image || place.image"
+              />
             </v-col>
           </v-row>
         </v-tab-item>
@@ -143,6 +153,7 @@
 </template>
 
 <script>
+import { uploadFile } from '~/firebase/api/file'
 import { mapState } from 'vuex'
 import GoogleMap from '~/components/GoogleMap'
 
@@ -169,6 +180,10 @@ export default {
     return {
       tab: 0,
       showMap: false,
+      localFile: null,
+      localFiles: {
+        image: null,
+      },
       place: {
         public: false,
         name: 'Place 1',
@@ -189,16 +204,12 @@ export default {
             lat: 46.64288927
           }
         },
-        img: 'https://via.placeholder.com/1920x1080?text=img-place',
+        image: 'https://via.placeholder.com/1920x1080?text=img-place',
       },
       mapChange: false,
     }
   },
   watch: {
-    place(beforeData, afterData) {
-      console.log('afterData:', afterData)
-      console.log('beforeData:', beforeData)
-    },
     'place.marker.coordinates.lat'() {
       this.mapChange = !this.mapChange
     },
@@ -222,6 +233,7 @@ export default {
     submit() {
       const currentDate = new Date().toISOString()
       this.place.edited = currentDate
+      this.localFiles.image ? this.place.image = this.localFiles.image : ''
       if (this.isUpdate) {
         this.$store.dispatch('places/updatePlace', this.place)
       } else {
@@ -232,6 +244,25 @@ export default {
     setNewCoordinates(coordinates) {
       this.place.marker.coordinates = coordinates
     },
+    fileInputChange(file) {
+      if (!file) {
+        this.localFiles.image = null
+        return
+      }
+      const directory = 'places'
+      const dateNow = Date.now()
+      const name = `image_${dateNow}`
+      uploadFile(file, name, directory)
+        .then((url) => {
+          const file = {
+            name: name,
+            directory: directory,
+            path: url,
+          }
+          this.$store.dispatch('files/createFile', file)
+          this.localFiles.image = url
+        })
+    }
   }
 }
 </script>
