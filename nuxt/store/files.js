@@ -10,10 +10,17 @@ const collection = 'files'
 
 export const state = () => ({
   dataLoaded: false,
+  loading: false,
   list: null,
 })
 
 export const mutations = {
+  loadingStart(state) {
+    state.loading = true
+  },
+  loadingEnd(state) {
+    state.loading = false
+  },
   mutate(state, payload) {
     state[payload.property] = payload.with;
   },
@@ -21,7 +28,7 @@ export const mutations = {
 
 export const actions = {
   async getCollection({ commit }) {
-    // commit('loadingStart')
+    commit('loadingStart')
     await getCollection(collection)
       .then((data) => {
         commit('mutate', {
@@ -34,7 +41,7 @@ export const actions = {
         })
       })
       .catch((err) => console.log('err:', err))
-      // .finally(() => commit('loadingEnd'))
+      .finally(() => commit('loadingEnd'))
   },
 
   async createFile({state, commit, actions, dispatch}, file) {
@@ -44,10 +51,9 @@ export const actions = {
     //   path: url,
     // }
 
-    // commit('loadingStart')
+    commit('loadingStart')
     await createDoc(collection, file)
       .then((id) => {
-        console.log('id:', id)
         // добавим новый элемент в начало массива
         file._id = id
         commit('mutate', {
@@ -59,8 +65,6 @@ export const actions = {
         })
       })
       .catch((err) => console.log('err:', err))
-      .finally(() => {
-        // commit('loadingEnd')
-      })
+      .finally(() => commit('loadingEnd'))
   },
 }

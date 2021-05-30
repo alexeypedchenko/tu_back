@@ -1,6 +1,6 @@
 <template>
   <div class="file-manager">
-    <v-card>
+    <v-card :loading="loading">
       <v-toolbar flat>
         <v-toolbar-title :title="title">
           {{ title }}
@@ -80,7 +80,7 @@
       v-model="showAddForm"
       width="500"
     >
-      <v-card>
+      <v-card :loading="loading">
         <v-row align="center" justify="space-between" class="ma-0 px-5 py-2">
           <h3 class="text-body-1">
             Добавить новое изображение
@@ -103,15 +103,15 @@
         >
           <v-text-field
             v-model="file.name"
-            label="Папка"
-            prepend-icon="mdi-folder-outline"
-            required
+            label="Название"
+            prepend-icon="mdi-text-short"
+            hint="Формат [name]_[Date.now()]"
+            persistent-hint
           />
           <v-text-field
-            v-model="file.folder"
-            label="Имя"
-            prepend-icon="mdi-text-short"
-            required
+            v-model="file.directory"
+            label="Папка"
+            prepend-icon="mdi-folder-outline"
           />
           <v-file-input
             accept="image/*"
@@ -123,7 +123,7 @@
             contain
             max-height="300"
             max-width="100%"
-            :src="'https://via.placeholder.com/300x200/000000/FFFFFF/?text=your-image' || ''"
+            :src="file.localImage || 'https://via.placeholder.com/300x200/000000/FFFFFF/?text=your-image'"
           />
         </form>
 
@@ -134,7 +134,8 @@
           <v-btn
             color="primary"
             text
-            @click="showAddForm = false"
+            @click="submitNewFile"
+            :disabled="!file.name || !file.directory || !file.item"
           >
             Submit
           </v-btn>
@@ -162,16 +163,16 @@ export default {
   },
   data() {
     return {
-      showAddForm: false,
       paginatedItems: {},
       activeTab: 0,
       selectedImages: [],
       title: `Файл менеджер: ${this.multiply ? 'выберите несколько изображений' : 'выберите одно изображение' }`,
+      showAddForm: false,
       file: {
-        name: '',
-        folder: '',
+        name: null,
+        directory: null,
         item: null,
-        localImage: '',
+        localImage: null,
       },
     }
   },
@@ -179,6 +180,7 @@ export default {
     ...mapState('files', [
       'list',
       'dataLoaded',
+      'loading',
     ]),
     groupImages() {
       const arr = this.list.reduce((acc, val) => {
@@ -229,25 +231,61 @@ export default {
       }
     },
     fileInputChange(file) {
-      console.log('file:', file)
-      this.file.name
-      this.file.folder
-      this.file.item
-      this.file.localImage
+      if (file) {
+      this.fileReader(file)
+        .then((base64) => {
+          this.file.item = file
+          this.file.localImage = base64
+        })
+      } else {
+        this.file.item = null
+        this.file.localImage = null
+      }
+    },
+    fileReader(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+
+        reader.onloadend = () => {
+          resolve(reader.result)
+        }
+      })
     },
     submitNewFile() {
-      console.log('submitNewFile:')
-      return
-      uploadFile(file, name, directory)
+      if (!this.file.name) {
+        this.$toast.error('Введите название файла')
+        return
+      }
+      if (!this.file.directory) {
+        this.$toast.error('Введите название папки файла')
+        return
+      }
+      if (!this.file.item) {
+        this.$toast.error('Добавьте файл')
+        return
+      }
+      const name = this.file.name + '_' + Date.now()
+      const directory = this.file.directory
+      this.$store.commit('files/loadingStart')
+      uploadFile(this.file.item, name, directory)
         .then((url) => {
           const file = {
             name: name,
             directory: directory,
             path: url,
+            created: new Date().toISOString()
           }
           this.$store.dispatch('files/createFile', file)
-          this.localFiles.image = url
+          this.clearNewFile()
+          this.showAddForm = false
         })
+        .finally(() => this.$store.commit('files/loadingEnd'))
+    },
+    clearNewFile() {
+      Object.keys(this.file).forEach((key) => {
+        this.file[key] = null
+      })
     }
   }
 }

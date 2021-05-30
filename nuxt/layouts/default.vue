@@ -28,4 +28,7 @@ export default {
 <style lang="scss">
 .page-enter-active, .page-leave-active { transition: opacity .25s; }
 .page-enter, .page-leave-active { opacity: 0; }
+body {
+  font-family: "Roboto", sans-serif;
+}
 </style>
