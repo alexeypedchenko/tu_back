@@ -9,6 +9,7 @@ import {
 const collection = 'files'
 
 export const state = () => ({
+  dataLoaded: false,
   list: null,
 })
 
@@ -19,6 +20,23 @@ export const mutations = {
 }
 
 export const actions = {
+  async getCollection({ commit }) {
+    // commit('loadingStart')
+    await getCollection(collection)
+      .then((data) => {
+        commit('mutate', {
+          property: 'list',
+          with: data
+        })
+        commit('mutate', {
+          property: 'dataLoaded',
+          with: true
+        })
+      })
+      .catch((err) => console.log('err:', err))
+      // .finally(() => commit('loadingEnd'))
+  },
+
   async createFile({state, commit, actions, dispatch}, file) {
     // file: {
     //   name: name,
