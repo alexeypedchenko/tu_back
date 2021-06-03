@@ -12,6 +12,7 @@
           color="success"
           @click="submit"
           :loading="loading"
+          :disabled="isUpdate && place.author !== user.uid"
         >
           <v-icon
             left
@@ -25,8 +26,19 @@
             Отправить
           </template>
         </v-btn>
+
         <v-btn
+          v-if="isUpdate"
+          class="mr-5"
           color="error"
+          @click="openDialog()"
+          :disabled="place.author !== user.uid"
+        >
+          <v-icon left>mdi-delete</v-icon>
+          Удалить
+        </v-btn>
+
+        <v-btn
           @click="$router.push('/places')"
         >
           <v-icon
@@ -92,11 +104,6 @@
                 label="Регион || Область"
                 required
               />
-              <v-text-field
-                v-model="place.region"
-                label="Город"
-                required
-              />
               <!-- tags -->
               <v-combobox
                 v-model="place.tags"
@@ -106,10 +113,10 @@
               />
             </v-col>
             <v-col cols="6">
-              <v-file-input
-                accept="image/*"
-                label="Изображение"
-                @change="fileInputChange"
+              <file-manager
+                v-model="localFiles.image"
+                :hasSelected="!!localFiles.image"
+                @clearSelected="localFiles.image = null"
               />
               <v-img
                 contain
@@ -149,6 +156,36 @@
         </v-tab-item>
       </v-tabs-items>
     </v-form>
+
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <v-card>
+        <v-card-title class="headline lighten-2">
+          Удалить {{ this.place.name }}?
+        </v-card-title>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="error"
+            text
+            @click="deleteItem"
+          >
+            Delete
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -156,6 +193,7 @@
 import { uploadFile } from '~/firebase/api/file'
 import { mapState } from 'vuex'
 import GoogleMap from '~/components/GoogleMap'
+import FileManager from '~/components/FileManager'
 
 export default {
   name: 'PlaceForm',
@@ -175,9 +213,11 @@ export default {
   },
   components: {
     GoogleMap,
+    FileManager,
   },
   data() {
     return {
+      dialog: false,
       tab: 0,
       showMap: false,
       localFile: null,
@@ -235,8 +275,10 @@ export default {
       this.place.edited = currentDate
       this.localFiles.image ? this.place.image = this.localFiles.image : ''
       if (this.isUpdate) {
+        if (!this.canUpdate()) return
         this.$store.dispatch('places/updatePlace', this.place)
       } else {
+        this.place.author = this.user.uid
         this.place.created = currentDate
         this.$store.dispatch('places/createPlace', this.place)
       }
@@ -262,6 +304,23 @@ export default {
           this.$store.dispatch('files/createFile', file)
           this.localFiles.image = url
         })
+    },
+    openDialog() {
+      if (!this.canUpdate()) return
+      this.dialog = true
+    },
+    async deleteItem() {
+      if (!this.canUpdate()) return
+      await this.$store.dispatch('places/deletePlace', this.place._id)
+      this.$router.push('/places')
+    },
+    canUpdate() {
+      if (this.place.author !== this.user.uid) {
+        this.$toast.error('У вас нет прав для редактирования!')
+        return false
+      } else {
+        return true
+      }
     }
   }
 }

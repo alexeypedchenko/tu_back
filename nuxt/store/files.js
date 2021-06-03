@@ -11,8 +11,18 @@ const collection = 'files'
 export const state = () => ({
   dataLoaded: false,
   loading: false,
-  list: null,
+  list: [],
 })
+
+export const getters = {
+  getDirectories(state) {
+    const set = new Set()
+    state.list.forEach((el) => {
+      set.add(el.directory)
+    })
+    return Array.from(set)
+  }
+}
 
 export const mutations = {
   loadingStart(state) {

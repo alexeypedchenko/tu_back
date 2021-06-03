@@ -60,6 +60,7 @@
           class="mr-2"
           v-if="editUrl"
           @click="editItem(item)"
+          :disabled="item.author !== user.uid"
         >
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
@@ -67,6 +68,7 @@
           color="error"
           icon
           @click="openDialog(item)"
+          :disabled="item.author !== user.uid"
         >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
@@ -134,10 +136,12 @@ export default {
     }
   },
   methods: {
-    editItem({_id}) {
+    editItem({_id, author}) {
+      if (!this.canUpdate(author)) return
       this.$router.push(`${this.editUrl}/${_id}`)
     },
-    openDialog({_id}) {
+    openDialog({_id, author}) {
+      if (!this.canUpdate(author)) return
       this.dialog = true
       this.deleteItemId = _id
     },
@@ -151,6 +155,14 @@ export default {
         search != null &&
         value.toString().toLowerCase().indexOf(search) !== -1
     },
+    canUpdate(author) {
+      if (author !== this.user.uid) {
+        this.$toast.error('У вас нет прав для редактирования!')
+        return false
+      } else {
+        return true
+      }
+    }
   }
 }
 </script>

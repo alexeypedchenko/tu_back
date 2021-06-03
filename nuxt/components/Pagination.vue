@@ -6,7 +6,6 @@
       justify="end"
       class="ma-0 mt-10"
     >
-      <!-- v-model="onPage" -->
       <v-select
         class="mr-5"
         :value="onPage"

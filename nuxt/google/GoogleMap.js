@@ -134,7 +134,7 @@ export class GoogleMap {
 
     this.centeredMap()
     // this.setWaypointsToDirections(this.markers)
-    this.map.setZoom(12)
+    // this.map.setZoom(12)
   }
 
   createMarker(data, onMap = false) {
@@ -183,7 +183,7 @@ export class GoogleMap {
     // Центрируем карту относительно одного маркера
     } else if (this.markers.length === 1) {
       this.map.setCenter(this.markers[0].getPosition())
-      this.map.setZoom(10)
+      // this.map.setZoom(10)
     // если маркеров нет, сбрасываем центр в исходную позицию
     } else {
       this.map.setCenter(this.mapOptions.center)

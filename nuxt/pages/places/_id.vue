@@ -9,15 +9,25 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import PlaceForm from '~/components/forms/PlaceForm'
 
 export default {
+  async fetch ({store}) {
+    const {dataLoaded} = store.state.places
+    if (!dataLoaded) {
+      await store.dispatch('places/getPlaces')
+    }
+  },
   components: {
     PlaceForm,
   },
   computed: {
+    ...mapState('places', [
+      'list',
+    ]),
     place() {
-      return this.$store.state.places.list.find((place) => place._id === this.$route.params.id)
+      return this.list.find((place) => place._id === this.$route.params.id)
     },
   }
 }

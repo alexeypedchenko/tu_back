@@ -3,7 +3,7 @@
     <h1 class="text-h1 mb-5">
       home
     </h1>
-    <file-manager />
+    <!-- <file-manager /> -->
   </div>
 </template>
 
@@ -14,6 +14,9 @@ export default {
   components: {
     FileManager,
   },
+  mounted() {
+    console.log('this.user:', this.user)
+  }
 }
 </script>
 
