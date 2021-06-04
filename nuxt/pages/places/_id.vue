@@ -10,7 +10,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import PlaceForm from '~/components/forms/PlaceForm'
+import PlaceForm from '~/components/PlaceForm'
 
 export default {
   async fetch ({store}) {

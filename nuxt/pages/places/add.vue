@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import PlaceForm from '~/components/forms/PlaceForm'
+import PlaceForm from '~/components/PlaceForm'
 
 export default {
   components: {

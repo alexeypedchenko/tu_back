@@ -1,9 +1,6 @@
 <template>
   <div class="google-map">
     <div class="google-map__actions">
-      <div class="google-map__action" @click="getNewCoordinates">
-        Применить новые координаты
-      </div>
       <div class="google-map__action" @click="centeredMap">
         Центрировать карту
       </div>
@@ -38,6 +35,10 @@ export default {
     change() {
       this.map.setMarkers([this.item])
     },
+    'map.coordinates'() {
+      if (!this.map.coordinates) return
+      this.$emit('newCoordinates', this.map.coordinates)
+    }
   },
   mounted() {
     this.map = new GoogleMap('.google-map__container', this.pin)
@@ -48,9 +49,6 @@ export default {
       })
   },
   methods: {
-    getNewCoordinates() {
-      this.$emit('newCoordinates', this.map.getNewCoordinates())
-    },
     centeredMap() {
       this.map.centeredMap()
     },

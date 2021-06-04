@@ -72,6 +72,10 @@
           <v-icon left>mdi-map-outline</v-icon>
           Карта
         </v-tab>
+        <v-tab>
+          <v-icon left>mdi-plus-box-multiple</v-icon>
+          Текстовые блоки
+        </v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tab">
@@ -114,12 +118,14 @@
             </v-col>
             <v-col cols="6">
               <file-manager
+                class="mb-4"
                 v-model="localFiles.image"
                 :hasSelected="!!localFiles.image"
                 @clearSelected="localFiles.image = null"
               />
               <v-img
                 contain
+                position="top left"
                 max-height="300"
                 max-width="100%"
                 :src="localFiles.image || place.image"
@@ -131,20 +137,56 @@
         <!-- карта -->
         <v-tab-item transition="fade-transition">
           <v-row>
-            <v-col>
-              <v-text-field
-                v-model="place.marker.coordinates.lat"
-                label="Latitude: широта"
-                required
+            <v-col cols="6">
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    v-model="place.marker.coordinates.lat"
+                    label="Latitude: широта"
+                    required
+                  />
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    v-model="place.marker.coordinates.lng"
+                    label="Longitude: долгота"
+                    required
+                  />
+                </v-col>
+              </v-row>
+
+              <file-manager
+                class="mb-2"
+                title="Выбрать Изображение окна маркера"
+                v-model="place.marker.image"
+                :hasSelected="!!localFiles.markerImage"
+                @clearSelected="localFiles.markerImage = null"
               />
-              <v-text-field
-                v-model="place.marker.coordinates.lng"
-                label="Longitude: долгота"
-                required
+              <v-img
+                class="mb-5"
+                contain
+                position="top left"
+                max-height="300"
+                max-width="100%"
+                :src="localFiles.markerImage || place.marker.image"
               />
-              Изображение
+
+              <file-manager
+                class="mb-1"
+                title="Выбрать иконку для маркера"
+                v-model="place.marker.icon"
+                :hasSelected="!!localFiles.markerIcon"
+                @clearSelected="localFiles.markerIcon = null"
+              />
+              <v-img
+                contain
+                position="top left"
+                max-height="30"
+                max-width="100%"
+                :src="localFiles.markerIcon || place.marker.icon"
+              />
             </v-col>
-            <v-col>
+            <v-col cols="6">
               <google-map
                 v-if="showMap"
                 :change="mapChange"
@@ -153,6 +195,13 @@
               />
             </v-col>
           </v-row>
+        </v-tab-item>
+        <v-tab-item transition="fade-transition">
+          <page-builder
+            class="ma-1"
+            :incomingBlocks="place.pageBlocks"
+            v-model="place.pageBlocks"
+          />
         </v-tab-item>
       </v-tabs-items>
     </v-form>
@@ -223,6 +272,8 @@ export default {
       localFile: null,
       localFiles: {
         image: null,
+        markerImage: null,
+        markerIcon: null,
       },
       place: {
         public: false,
@@ -238,13 +289,14 @@ export default {
         ],
         marker: {
           icon: 'https://via.placeholder.com/30x30?text=pin',
-          img: 'https://via.placeholder.com/120x80?text=img-place',
+          image: 'https://via.placeholder.com/120x80?text=img-place',
           coordinates: {
             lng: 32.07230514,
             lat: 46.64288927
           }
         },
         image: 'https://via.placeholder.com/1920x1080?text=img-place',
+        pageBlocks: [],
       },
       mapChange: false,
     }
@@ -254,6 +306,12 @@ export default {
       this.mapChange = !this.mapChange
     },
     'place.marker.coordinates.lng'() {
+      this.mapChange = !this.mapChange
+    },
+    'place.marker.icon'() {
+      this.mapChange = !this.mapChange
+    },
+    'place.marker.image'() {
       this.mapChange = !this.mapChange
     },
   },

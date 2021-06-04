@@ -67,7 +67,13 @@
       />
     </v-dialog>
 
-    <div class="file-manager__actions mb-4">
+    <div
+      v-if="title"
+      class="text-subtitle-2 mb-1 file-manager__title"
+    >
+      {{ title }}:
+    </div>
+    <div class="file-manager__actions">
       <v-btn
         @click="open"
         color="success"
@@ -104,6 +110,10 @@ export default {
     AppPagination: Pagination,
   },
   props: {
+    title: {
+      type: String,
+      default: '',
+    },
     multiply: {
       type: Boolean,
       default: false,
@@ -253,8 +263,8 @@ export default {
   }
 
   img {
-    max-height: 150px;
-    max-width: 150px;
+    height: 150px;
+    width: 150px;
     object-fit: contain;
   }
 }

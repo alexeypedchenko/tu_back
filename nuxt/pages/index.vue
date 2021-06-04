@@ -3,20 +3,20 @@
     <h1 class="text-h1 mb-5">
       home
     </h1>
-    <!-- <file-manager /> -->
+    <PageBuilder
+      :incomingBlocks="blocks"
+      v-model="blocks"
+    />
   </div>
 </template>
 
 <script>
-import FileManager from '~/components/FileManager'
-
 export default {
-  components: {
-    FileManager,
+  data() {
+    return {
+      blocks: []
+    }
   },
-  mounted() {
-    console.log('this.user:', this.user)
-  }
 }
 </script>
 

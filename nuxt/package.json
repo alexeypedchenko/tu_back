@@ -16,7 +16,8 @@
     "core-js": "^3.9.1",
     "dayjs": "^1.10.5",
     "firebase": "^8.6.2",
-    "nuxt": "^2.15.3"
+    "nuxt": "^2.15.3",
+    "vue-slicksort": "^1.2.0"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3",

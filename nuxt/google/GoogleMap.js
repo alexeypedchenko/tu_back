@@ -147,7 +147,7 @@ export class GoogleMap {
       zIndex: 10,
       // https://developers.google.com/maps/documentation/javascript/reference/marker#Icon
       icon: {
-        url: this.pin,
+        url: data.marker.icon || this.pin,
         // url: data.marker.icon || this.pin,
         size: new google.maps.Size(30, 30),
         // если изображение меньше или больше 30px, масштабируем до 30
@@ -258,9 +258,6 @@ export class GoogleMap {
       this.centeredMap()
     })
   }
-  getNewCoordinates() {
-    return this.coordinates
-  }
 
   clearMarkers() {
     this.clearCluster()
@@ -284,7 +281,7 @@ export class GoogleMap {
       <div class="map-window">
         <!-- href="{item.link}" -->
         <div class="map-window-img">
-          <img src="${data.markerImg}" alt="${data.name}">
+          <img src="${data.marker.image}" alt="${data.name}">
         </div>
         <div class="map-window-content">
           <div class="map-window-text">
