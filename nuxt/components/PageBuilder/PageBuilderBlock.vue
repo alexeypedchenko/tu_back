@@ -2,7 +2,7 @@
   <v-card class="page-builder-block">
     <v-card-title class="page-builder-block-head">
       <span>
-        {{ type }} block
+        {{ capitalize(type) }} block
       </span>
 
       <div>
@@ -42,6 +42,12 @@
           label="Введите текст"
           @input="change"
           :value="prop"
+        />
+      </template>
+      <template v-if="type === 'texteditor'">
+        <quill-editor
+          :content="prop"
+          @change="change($event.html)"
         />
       </template>
       <template v-if="type === 'image'">
@@ -84,6 +90,7 @@ export default {
   },
   methods: {
     change(value) {
+      console.log('value:', value)
       const props = {
         [this.type]: value
       }
@@ -108,5 +115,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.ql-editor {
+  min-height: 150px;
 }
 </style>

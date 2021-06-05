@@ -59,13 +59,13 @@
                 @click="addBlock(block.type)"
               >
                 <v-icon left>
-                  mdi-{{ block.type }}
+                  mdi-{{ block.icon }}
                 </v-icon>
                 <div style="width: 200px; text-align: center;">
                   {{ block.name }}
                 </div>
                 <v-icon right>
-                  mdi-{{ block.type }}
+                  mdi-{{ block.icon }}
                 </v-icon>
               </v-chip>
             </v-col>
@@ -103,6 +103,7 @@ export default {
   },
   methods: {
     addBlock(type) {
+      console.log('type:', type)
       const block = JSON.parse(JSON.stringify(this.blocks.find((block) => block.type === type)))
       this.$emit('addBlock', block)
       this.dialog = false

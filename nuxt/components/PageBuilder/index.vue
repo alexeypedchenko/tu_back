@@ -32,10 +32,11 @@
 <script>
 import { SlickList, SlickItem } from 'vue-slicksort';
 
-function getBlockData(id, name, type) {
+function getBlockData(name, type, icon = type) {
   return {
     name,
     type,
+    icon,
     props: null,
     published: false,
   }
@@ -57,8 +58,9 @@ export default {
     return {
       showList: true,
       blocks: [
-        getBlockData(0, 'Text block', 'text'),
-        getBlockData(1, 'Image block', 'image'),
+        getBlockData('Text block', 'text'),
+        getBlockData('Texteditor block', 'texteditor', 'playlist-edit'),
+        getBlockData('Image block', 'image'),
       ],
       localBlocks: [
         ...this.incomingBlocks

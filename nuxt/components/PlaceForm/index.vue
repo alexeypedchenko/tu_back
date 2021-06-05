@@ -73,8 +73,8 @@
           Карта
         </v-tab>
         <v-tab>
-          <v-icon left>mdi-plus-box-multiple</v-icon>
-          Текстовые блоки
+          <v-icon left>mdi-page-layout-header-footer</v-icon>
+          Блоки страницы
         </v-tab>
       </v-tabs>
 

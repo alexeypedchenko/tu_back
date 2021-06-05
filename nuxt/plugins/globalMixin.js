@@ -13,6 +13,9 @@ Vue.mixin({
     dataFormat(date) {
       const LLL = 'D.MM.YY, H:mm'
       return dayjs(date).locale(ru).format(LLL)
+    },
+    capitalize(str) {
+      return str[0].toUpperCase() + str.slice(1)
     }
   },
 })

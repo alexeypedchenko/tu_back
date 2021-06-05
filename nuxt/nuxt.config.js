@@ -30,6 +30,7 @@ export default {
     { src: '~/plugins/fillStore.js' },
     { src: '~/plugins/auth.js' },
     { src: '~/plugins/globalMixin.js' },
+    { src: '~/plugins/vue-quill-editor.js' },
     // { src: '~/plugins/globalComponents.js' },
   ],
 
