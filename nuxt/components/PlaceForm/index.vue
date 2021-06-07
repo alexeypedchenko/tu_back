@@ -4,24 +4,24 @@
       :title="title"
       :loading="loading"
       :isUpdate="isUpdate"
-      backUrl="/places"
+      :backUrl="backUrl"
       @submit="submit"
+      @delete="deleteItem"
     >
-      <v-row class="mb-4 ma-0">
-        <v-switch
-          inset
-          v-model="place.public"
-          label="Опубликовать"
-        ></v-switch>
-      </v-row>
-
+    <v-row class="mb-4 ma-0">
+      <v-switch
+        inset
+        v-model="place.public"
+        label="Опубликовать"
+      />
+    </v-row>
+    <v-card>
       <v-tabs
         v-model="tab"
-        class="mb-5"
+        background-color="deep-purple accent-4"
         dark
-        background-color="cyan"
       >
-        <v-tabs-slider color="white"></v-tabs-slider>
+        <!-- background-color="cyan" -->
         <v-tab>
           <v-icon left>mdi-file-document-outline</v-icon>
           Описание
@@ -36,8 +36,8 @@
         </v-tab>
       </v-tabs>
 
-      <v-tabs-items v-model="tab">
-        <!-- описание -->
+      <!-- описание -->
+      <v-tabs-items class="pa-4" v-model="tab">
         <v-tab-item transition="fade-transition">
           <v-row>
             <v-col cols="6">
@@ -154,21 +154,21 @@
             </v-col>
           </v-row>
         </v-tab-item>
+
+        <!-- статические блоки -->
         <v-tab-item transition="fade-transition">
           <page-builder
-            class="ma-1"
             :incomingBlocks="place.pageBlocks"
             v-model="place.pageBlocks"
           />
         </v-tab-item>
       </v-tabs-items>
+    </v-card>
     </main-form>
   </div>
 </template>
 
 <script>
-import { uploadFile } from '~/firebase/api/file'
-import { mapState } from 'vuex'
 import GoogleMap from '~/components/GoogleMap'
 import FileManager from '~/components/FileManager'
 
@@ -179,13 +179,29 @@ export default {
       type: String,
       default: '',
     },
+    actionName: {
+      type: String,
+      default: '',
+    },
     isUpdate: {
       type: Boolean,
       default: false,
     },
+    backUrl: {
+      type: String,
+      default: '',
+    },
     incomingPlace: {
       type: Object,
       default: () => ({})
+    },
+    list: {
+      type: Array,
+      default: () => ([]),
+    },
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
@@ -241,12 +257,6 @@ export default {
       this.mapChange = !this.mapChange
     },
   },
-  computed: {
-    ...mapState('places', [
-      'loading',
-      'list',
-    ]),
-  },
   mounted() {
     if (this.isUpdate) {
       this.place = JSON.parse(JSON.stringify(this.incomingPlace))
@@ -254,21 +264,27 @@ export default {
     this.showMap = true
   },
   methods: {
-    submit() {
+    async submit() {
       this.setImages()
       if (this.isUpdate) {
-        if (!this.canUpdate()) return
-        this.$store.dispatch('places/updateDoc', this.getPlaceCopy())
+        await this.$store
+          .dispatch(`${this.actionName}/updateDoc`, this.getPlaceCopy())
+          .then(() => this.$toast.success('Данные успешно обновлены!'))
       } else {
         this.place.author = this.user.uid
-        this.$store.dispatch('places/createDoc', this.getPlaceCopy())
+        await this.$store
+          .dispatch(`${this.actionName}/createDoc`, this.getPlaceCopy())
+          .then(() => this.$router.push(this.backUrl))
       }
       this.clearLocalFiles()
-      // перейдем на страницу мест
-      // this.$router.push('/places')
     },
     getPlaceCopy() {
       return JSON.parse(JSON.stringify(this.place))
+    },
+    async deleteItem() {
+      await this.$store
+        .dispatch(`${this.actionName}/deleteDoc`, this.place._id)
+        .then(() => this.$router.push(this.backUrl))
     },
     setImages() {
       this.localFiles.image ? this.place.image = this.localFiles.image : ''
@@ -283,14 +299,15 @@ export default {
     setNewCoordinates(coordinates) {
       this.place.marker.coordinates = coordinates
     },
-    canUpdate() {
-      if (this.place.author !== this.user.uid) {
-        this.$toast.error('У вас нет прав для редактирования!')
-        return false
-      } else {
-        return true
-      }
-    }
+    // canUpdate() {
+    //   // if (!this.canUpdate()) return
+    //   if (this.place.author !== this.user.uid) {
+    //     this.$toast.error('У вас нет прав для редактирования!')
+    //     return false
+    //   } else {
+    //     return true
+    //   }
+    // }
   }
 }
 </script>

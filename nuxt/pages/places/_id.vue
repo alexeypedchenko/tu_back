@@ -1,14 +1,17 @@
 <template>
   <place-form
-    :title="`Изменить ${place.name}`"
-    :isUpdate="true"
+    :title="isUpdate ? `Изменить ${place.name}` : 'Добавить новое место'"
+    backUrl="/places"
+    actionName="places"
+    :loading="loading"
+    :list="list"
+    :isUpdate="isUpdate"
     :incomingPlace="place"
   />
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import PlaceForm from '~/components/PlaceForm'
 
 export default {
   async fetch ({store}) {
@@ -17,16 +20,20 @@ export default {
       await store.dispatch('places/getCollection')
     }
   },
-  components: {
-    PlaceForm,
+  mounted() {
+    console.log('!!this.place:', !!this.place)
   },
   computed: {
     ...mapState('places', [
+      'loading',
       'list',
     ]),
     place() {
       return this.list.find((place) => place._id === this.$route.params.id)
     },
+    isUpdate() {
+      return !!this.place
+    }
   }
 }
 </script>
