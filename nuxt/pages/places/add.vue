@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <place-form formTitle="Добавить новое место"/>
-  </div>
+  <place-form title="Добавить новое место" />
 </template>
 
 <script>

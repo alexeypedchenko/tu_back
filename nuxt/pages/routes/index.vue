@@ -1,15 +1,14 @@
 <template>
-  <div class="places">
+  <div class="routes">
     <data-table
       v-if="list && list.length"
       title="Places"
-      storeName="places"
-      addUrl="add"
-      :canEdit="true"
-      :canDelete="true"
+      addUrl="/places/add"
+      editUrl="/places"
+      deleteAction="places/deleteDoc"
+      :headers="headers"
       :list="list"
       :loading="loading"
-      :addedHeaders="headers"
     />
   </div>
 </template>
@@ -28,9 +27,34 @@ export default {
     return {
       headers: [
         {
+          text: 'Is published',
+          value: 'public',
+          sortable: true,
+        },
+        {
+          text: 'Created',
+          value: 'created',
+          sortable: true,
+        },
+        {
+          text: 'Edited',
+          value: 'edited',
+          sortable: true,
+        },
+        {
+          text: 'Id',
+          value: '_id',
+          sortable: false,
+        },
+        {
           text: 'Name',
           value: 'name',
           sortable: false,
+        },
+        {
+          text: 'Actions',
+          value: 'actions',
+          sortable: false
         },
       ],
     }

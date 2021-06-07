@@ -5,7 +5,7 @@ const db = firebase.firestore()
 export const getCollection = async (collection) => {
   return new Promise((res, rej) => {
     db.collection(collection)
-      // .orderBy('created', 'desc')
+      .orderBy('created', 'desc')
       .get()
       .then((querySnapshot) => {
         if (querySnapshot.size === 0) res([]) // возвращаем пустой массив
@@ -23,6 +23,7 @@ export const getCollection = async (collection) => {
 }
 
 export const createDoc = async (collection, item) => {
+  item.created = new Date().toISOString()
   return new Promise((res, rej) => {
     db.collection(collection).add(item)
       .then((docRef) => res(docRef.id))
@@ -36,6 +37,7 @@ export const getDoc = async (collection, id) => {
 }
 
 export const updateDoc = async (collection, id, item) => {
+  item.edited = new Date().toISOString()
   return new Promise((res, rej) => {
     db.collection(collection)
       .doc(id)

@@ -1,9 +1,12 @@
 import {
-  getPlaces,
-  createPlace,
-  deletePlace,
-  updatePlace,
-} from '~/firebase/api/place'
+  getCollection,
+  createDoc,
+  deleteDoc,
+  updateDoc,
+  getDoc,
+} from '~/firebase/firebaseApi'
+
+const collection = 'places'
 
 export const state = () => ({
   dataLoaded: false,
@@ -24,9 +27,9 @@ export const mutations = {
 }
 
 export const actions = {
-  async getPlaces({ commit }) {
+  async getCollection({ commit }) {
     commit('loadingStart')
-    await getPlaces()
+    await getCollection(collection)
       .then((data) => {
         commit('mutate', {
           property: 'list',
@@ -41,9 +44,9 @@ export const actions = {
       .finally(() => commit('loadingEnd'))
   },
 
-  async createPlace({state, commit, actions, dispatch}, newPlace) {
+  async createDoc({state, commit, actions, dispatch}, newPlace) {
     commit('loadingStart')
-    await createPlace(newPlace)
+    await createDoc(collection, newPlace)
       .then((id) => {
         // добавим новый элемент в начало массива
         newPlace._id = id
@@ -54,16 +57,14 @@ export const actions = {
             ...state.list
           ]
         })
-        // перейдем на страницу мест
-        this.$router.push('/places')
       })
       .catch((err) => console.log('err:', err))
       .finally(() => commit('loadingEnd'))
   },
 
-  async deletePlace({state, commit, dispatch}, id) {
+  async deleteDoc({state, commit, dispatch}, id) {
     commit('loadingStart')
-    await deletePlace(id)
+    await deleteDoc(collection, id)
       .then(() => {
         // отфильтруем список элементов, исключив удаленный id
         commit('mutate', {
@@ -78,9 +79,9 @@ export const actions = {
       .finally(() => commit('loadingEnd'))
   },
 
-  async updatePlace({state, commit, dispatch}, newPlace) {
+  async updateDoc({state, commit, dispatch}, newPlace) {
     commit('loadingStart')
-    await updatePlace(newPlace._id, newPlace)
+    await updateDoc(collection, newPlace._id, newPlace)
       .then(() => {
         // обновляем данные места локально
         // что бы не делать новый запрос
@@ -92,9 +93,6 @@ export const actions = {
           property: 'list',
           with: state.list
         })
-
-        // перейдем на страницу мест
-        this.$router.push('/places')
       })
       .catch((err) => console.log('err:', err))
       .finally(() => commit('loadingEnd'))

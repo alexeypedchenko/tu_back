@@ -38,7 +38,7 @@ function getBlockData(name, type, icon = type) {
     type,
     icon,
     props: null,
-    published: false,
+    published: true,
   }
 }
 

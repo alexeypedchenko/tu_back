@@ -158,7 +158,6 @@ export default {
             name: this.file.name,
             directory: directory,
             path: url,
-            created: new Date().toISOString()
           }
           this.$store.dispatch('files/createFile', file)
           this.clearNewFile()

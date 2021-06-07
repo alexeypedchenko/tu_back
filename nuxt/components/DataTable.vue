@@ -1,5 +1,30 @@
 <template>
   <div class="data-table">
+    <v-row
+      v-if="title || addUrl"
+      class="ma-0 mb-5"
+      align="center"
+    >
+      <h2
+        v-if="title"
+        class="text-h2"
+      >
+        {{ title }}
+      </h2>
+
+      <v-btn
+        class="ml-auto"
+        v-if="addUrl"
+        color="success"
+        @click="$router.push(`${storeName}/${addUrl}`)"
+      >
+        <v-icon left>
+          mdi-plus
+        </v-icon>
+        add new
+      </v-btn>
+    </v-row>
+
     <v-data-table
       :headers="headers"
       :items="list"
@@ -55,27 +80,28 @@
         #item.actions="{ item }"
       >
         <v-btn
-          color="primary"
+          v-if="canEdit"
           icon
+          color="primary"
           class="mr-2"
-          v-if="editUrl"
-          @click="editItem(item)"
           :disabled="item.author !== user.uid"
+          @click="editItem(item)"
         >
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
         <v-btn
-          color="error"
+          v-if="canDelete"
           icon
-          @click="openDialog(item)"
+          color="error"
           :disabled="item.author !== user.uid"
+          @click="openDialog(item)"
         >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
     </v-data-table>
 
-     <v-dialog
+    <v-dialog
       v-model="dialog"
       width="500"
     >
@@ -114,7 +140,7 @@ export default {
       type: Array,
       default: () => ([])
     },
-    headers: {
+    addedHeaders: {
       type: Array,
       default: () => ([])
     },
@@ -122,14 +148,58 @@ export default {
       type: Boolean,
       default: false,
     },
-    editUrl: {
+    title: {
       type: String,
       default: '',
+    },
+    storeName: {
+      type: String,
+      default: '',
+    },
+    addUrl: {
+      type: String,
+      default: '',
+    },
+    canEdit: {
+      type: Boolean,
+      default: false,
+    },
+    canDelete: {
+      type: Boolean,
+      default: false,
     },
   },
   name: 'DataTable',
   data() {
     return {
+      headers: [
+        ...this.addedHeaders,
+        {
+          text: 'Is published',
+          value: 'public',
+          sortable: true,
+        },
+        {
+          text: 'Created',
+          value: 'created',
+          sortable: true,
+        },
+        {
+          text: 'Edited',
+          value: 'edited',
+          sortable: true,
+        },
+        {
+          text: 'Id',
+          value: '_id',
+          sortable: false,
+        },
+        {
+          text: 'Actions',
+          value: 'actions',
+          sortable: false
+        },
+      ],
       search: '',
       dialog: false,
       deleteItemId: null,
@@ -138,7 +208,7 @@ export default {
   methods: {
     editItem({_id, author}) {
       if (!this.canUpdate(author)) return
-      this.$router.push(`${this.editUrl}/${_id}`)
+      this.$router.push(`${this.storeName}/${_id}`)
     },
     openDialog({_id, author}) {
       if (!this.canUpdate(author)) return
@@ -146,7 +216,7 @@ export default {
       this.deleteItemId = _id
     },
     deleteItem() {
-      this.$emit('delete', this.deleteItemId)
+      this.$store.dispatch(`${this.storeName}/deleteDoc`, this.deleteItemId)
       this.dialog = false
     },
     searchFilter(value, search, item) {

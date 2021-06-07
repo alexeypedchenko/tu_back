@@ -53,8 +53,13 @@ export default {
         },
         {
           title: 'Places',
-          icon: 'mdi-account-group-outline',
+          icon: 'mdi-map-marker-plus-outline',
           link: '/places'
+        },
+        {
+          title: 'routes',
+          icon: 'mdi-map-marker-distance',
+          link: '/routes'
         },
       ],
       mini: false,

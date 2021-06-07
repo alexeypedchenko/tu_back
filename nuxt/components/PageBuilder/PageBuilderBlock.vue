@@ -13,7 +13,7 @@
           <v-icon v-if="published" color="success">
             mdi-eye
           </v-icon>
-          <v-icon v-else>
+          <v-icon v-else color="primary">
             mdi-eye-off
           </v-icon>
         </v-btn>
@@ -90,7 +90,6 @@ export default {
   },
   methods: {
     change(value) {
-      console.log('value:', value)
       const props = {
         [this.type]: value
       }
@@ -111,6 +110,11 @@ export default {
 </script>
 
 <style lang="scss">
+.page-builder-block {
+  .v-text-field .v-label {
+    transform-origin: top left;
+  }
+}
 .page-builder-block-head {
   display: flex;
   justify-content: space-between;

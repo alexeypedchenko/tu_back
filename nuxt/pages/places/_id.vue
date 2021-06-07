@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <place-form
-      :formTitle="`Изменить ${place.name}`"
-      :isUpdate="true"
-      :incomingPlace="place"
-    />
-  </div>
+  <place-form
+    :title="`Изменить ${place.name}`"
+    :isUpdate="true"
+    :incomingPlace="place"
+  />
 </template>
 
 <script>
@@ -16,7 +14,7 @@ export default {
   async fetch ({store}) {
     const {dataLoaded} = store.state.places
     if (!dataLoaded) {
-      await store.dispatch('places/getPlaces')
+      await store.dispatch('places/getCollection')
     }
   },
   components: {
