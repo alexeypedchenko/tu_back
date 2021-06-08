@@ -84,18 +84,18 @@
           icon
           color="primary"
           class="mr-2"
-          :disabled="item.author !== user.uid"
           @click="editItem(item)"
         >
+          <!-- :disabled="item.author !== user.uid" -->
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
         <v-btn
           v-if="canDelete"
           icon
           color="error"
-          :disabled="item.author !== user.uid"
           @click="openDialog(item)"
         >
+          <!-- :disabled="item.author !== user.uid" -->
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -207,11 +207,11 @@ export default {
   },
   methods: {
     editItem({_id, author}) {
-      if (!this.canUpdate(author)) return
+      // if (!this.canUpdate(author)) return
       this.$router.push(`${this.storeName}/${_id}`)
     },
     openDialog({_id, author}) {
-      if (!this.canUpdate(author)) return
+      // if (!this.canUpdate(author)) return
       this.dialog = true
       this.deleteItemId = _id
     },

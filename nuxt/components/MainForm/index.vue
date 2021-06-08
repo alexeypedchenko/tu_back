@@ -9,7 +9,7 @@
         <v-btn
           class="mr-5"
           color="success"
-          @click="$emit('submit')"
+          @click="submit"
           :loading="loading"
         >
           <v-icon
@@ -27,20 +27,14 @@
 
         <delete-dialog
           v-if="isUpdate"
-          @delete="$emit('delete')"
+          @delete="deleteItem"
         />
 
-        <v-btn
+        <exit-dialog
           v-if="backUrl"
-          @click="$router.push(backUrl)"
-        >
-          <v-icon
-            left
-          >
-            mdi-arrow-left
-          </v-icon>
-          Назад
-        </v-btn>
+          :backUrl="backUrl"
+          :edited="edited"
+        />
       </v-row>
 
       <div class="main-form__body">
@@ -70,7 +64,40 @@ export default {
       type: Boolean,
       default: false,
     },
+    edited: {
+      type: Boolean,
+      default: false,
+    },
+    actionName: {
+      type: String,
+      default: '',
+    },
+    object: {
+      type: Object,
+      default: () => ({}),
+    },
   },
+  methods: {
+    async submit() {
+      if (this.isUpdate) {
+        await this.$store
+          .dispatch(`${this.actionName}/updateDoc`, this.object)
+          .then(() => this.$toast.success('Данные успешно обновлены!'))
+      } else {
+        await this.$store
+          .dispatch(`${this.actionName}/createDoc`, this.object)
+          .then(() => {
+            this.$toast.success('Новый объект успешно создан!')
+            this.$router.push(this.backUrl)
+          })
+      }
+    },
+    async deleteItem() {
+      await this.$store
+        .dispatch(`${this.actionName}/deleteDoc`, this.object._id)
+        .then(() => this.$router.push(this.backUrl))
+    },
+  }
 }
 </script>
 

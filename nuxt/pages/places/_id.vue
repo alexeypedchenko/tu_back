@@ -20,9 +20,6 @@ export default {
       await store.dispatch('places/getCollection')
     }
   },
-  mounted() {
-    console.log('!!this.place:', !!this.place)
-  },
   computed: {
     ...mapState('places', [
       'loading',
@@ -34,7 +31,7 @@ export default {
     isUpdate() {
       return !!this.place
     }
-  }
+  },
 }
 </script>
 

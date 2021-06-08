@@ -77,8 +77,8 @@ export default {
   methods: {
     addBlock(block) {
       block.id = Date.now(),
-      // this.localBlocks.push(block)
-      this.$set(this.localBlocks, this.localBlocks.length, block)
+      this.localBlocks.push(block)
+      // this.$set(this.localBlocks, this.localBlocks.length, block)
     },
     save() {
       this.$emit('input', this.localBlocks)

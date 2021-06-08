@@ -18,19 +18,6 @@
         </v-icon>
         Добавить блок
       </v-btn>
-
-      <!-- <v-btn
-        color="success"
-        dark
-        @click="$emit('save')"
-      >
-        <v-icon
-          left
-        >
-          mdi-check
-        </v-icon>
-        Сохранить
-      </v-btn> -->
     </v-row>
 
     <v-dialog
@@ -45,31 +32,25 @@
           style="height: 300px;"
           class="pa-4"
         >
-          <v-row>
-            <v-col
-              v-for="block in blocks"
-              :key="block.id"
-              cols="12"
-              class="pb-0"
-            >
-              <v-chip
-                style="width: 100%"
-                label
-                outlined
-                @click="addBlock(block.type)"
-              >
-                <v-icon left>
-                  mdi-{{ block.icon }}
-                </v-icon>
-                <div style="width: 200px; text-align: center;">
-                  {{ block.name }}
-                </div>
-                <v-icon right>
-                  mdi-{{ block.icon }}
-                </v-icon>
-              </v-chip>
-            </v-col>
-          </v-row>
+          <v-chip
+            v-for="block in blocks"
+            :key="block.id"
+            style="width: 100%"
+            class="mb-3"
+            label
+            outlined
+            @click="addBlock(block.type)"
+          >
+            <v-icon left>
+              mdi-{{ block.icon }}
+            </v-icon>
+            <div style="width: 200px; text-align: center;">
+              {{ block.name }}
+            </div>
+            <v-icon right>
+              mdi-{{ block.icon }}
+            </v-icon>
+          </v-chip>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -103,7 +84,6 @@ export default {
   },
   methods: {
     addBlock(type) {
-      console.log('type:', type)
       const block = JSON.parse(JSON.stringify(this.blocks.find((block) => block.type === type)))
       this.$emit('addBlock', block)
       this.dialog = false

@@ -37,7 +37,7 @@ export default {
     },
     'map.coordinates'() {
       if (!this.map.coordinates) return
-      this.$emit('newCoordinates', this.map.coordinates)
+      this.$emit('input', this.map.coordinates)
     }
   },
   mounted() {

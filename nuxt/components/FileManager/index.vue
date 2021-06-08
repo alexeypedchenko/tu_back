@@ -9,8 +9,8 @@
         <file-manager-head
           @add="showAddForm = true"
           @choice="emitImages"
-          :selected="!!this.selectedImages.length"
           @close="close"
+          :selected="!!this.selectedImages.length"
         />
 
         <div v-if="dataLoaded">
@@ -84,18 +84,6 @@
         </v-icon>
         Выбрать изображение
       </v-btn>
-
-      <v-btn
-        v-if="hasSelected"
-        @click="$emit('clearSelected')"
-        color="error"
-        text
-      >
-        <v-icon left>
-          mdi-image-minus
-        </v-icon>
-        Убрать изображение
-      </v-btn>
     </div>
   </div>
 </template>
@@ -115,10 +103,6 @@ export default {
       default: '',
     },
     multiply: {
-      type: Boolean,
-      default: false,
-    },
-    hasSelected: {
       type: Boolean,
       default: false,
     },
