@@ -6,7 +6,7 @@ import {
   getDoc,
 } from '~/firebase/firebaseApi'
 
-const collection = 'places'
+const collection = 'routes'
 
 export const state = () => ({
   dataLoaded: false,

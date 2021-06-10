@@ -1,12 +1,10 @@
 <template>
-  <place-form
-    :title="isUpdate ? `Изменить ${place.name}` : 'Добавить новое место'"
+  <forms-place-form
     backUrl="/places"
     actionName="places"
     :loading="loading"
     :list="list"
-    :isUpdate="isUpdate"
-    :incomingPlace="place"
+    :incomingObject="place"
   />
 </template>
 
@@ -26,11 +24,9 @@ export default {
       'list',
     ]),
     place() {
-      return this.list.find((place) => place._id === this.$route.params.id)
+      const place = this.list.find((place) => place._id === this.$route.params.id)
+      return place || null
     },
-    isUpdate() {
-      return !!this.place
-    }
   },
 }
 </script>

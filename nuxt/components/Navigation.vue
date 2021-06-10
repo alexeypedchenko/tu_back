@@ -56,11 +56,11 @@ export default {
           icon: 'mdi-map-marker-plus-outline',
           link: '/places'
         },
-        // {
-        //   title: 'routes',
-        //   icon: 'mdi-map-marker-distance',
-        //   link: '/routes'
-        // },
+        {
+          title: 'routes',
+          icon: 'mdi-map-marker-distance',
+          link: '/routes'
+        },
       ],
       mini: false,
     }

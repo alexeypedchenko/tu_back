@@ -1,17 +1,12 @@
 <template>
   <div class="place-form">
-    edited: {{ edited }}
-    <pre>
-      {{ getPlaceCopy }}
-    </pre>
     <main-form
-      :title="title"
+      :title="isUpdate ? `Изменить ${incomingObject.name}` : 'Добавить новое место'"
       :loading="loading"
       :isUpdate="isUpdate"
       :backUrl="backUrl"
-      :edited="edited"
       :actionName="actionName"
-      :object="getPlaceCopy"
+      :object="getCopiedObject"
     >
       <v-row class="mb-4 ma-0">
         <v-switch
@@ -117,30 +112,23 @@
 </template>
 
 <script>
+import { getObjectCopy } from '~/assets/utils'
 import { getPlaceScheme } from '~/assets/dbschemes'
 
 export default {
   name: 'PlaceForm',
   props: {
-    title: {
-      type: String,
-      default: '',
-    },
     actionName: {
       type: String,
       default: '',
-    },
-    isUpdate: {
-      type: Boolean,
-      default: false,
     },
     backUrl: {
       type: String,
       default: '',
     },
-    incomingPlace: {
+    incomingObject: {
       type: Object,
-      default: () => ({})
+      default: null,
     },
     loading: {
       type: Boolean,
@@ -156,18 +144,21 @@ export default {
   computed: {
     edited() {
       if (this.isUpdate) {
-        return JSON.stringify(this.place) !== JSON.stringify(this.incomingPlace)
+        return JSON.stringify(this.place) !== JSON.stringify(this.incomingObject)
       } else {
         return JSON.stringify(this.place) !== JSON.stringify(getPlaceScheme())
       }
     },
-    getPlaceCopy() {
-      return JSON.parse(JSON.stringify(this.place))
+    getCopiedObject() {
+      return getObjectCopy(this.place)
+    },
+    isUpdate() {
+      return !!this.incomingObject
     },
   },
   mounted() {
     if (this.isUpdate) {
-      this.place = JSON.parse(JSON.stringify(this.incomingPlace))
+      this.place = getObjectCopy(this.incomingObject)
     }
   },
 }

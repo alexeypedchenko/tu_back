@@ -97,7 +97,7 @@ export default {
         .dispatch(`${this.actionName}/deleteDoc`, this.object._id)
         .then(() => this.$router.push(this.backUrl))
     },
-  }
+  },
 }
 </script>
 

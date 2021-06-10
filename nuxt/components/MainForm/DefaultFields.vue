@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { getObjectCopy } from '~/assets/utils'
 import { getDefaultFields } from '~/assets/dbschemes'
 
 export default {
@@ -82,7 +83,7 @@ export default {
   },
   mounted() {
     if (this.incomingObject) {
-      this.object = JSON.parse(JSON.stringify(this.incomingObject))
+      this.object = getObjectCopy(this.incomingObject)
     }
   }
 }

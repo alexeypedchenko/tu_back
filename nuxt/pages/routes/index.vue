@@ -1,9 +1,9 @@
 <template>
-  <div class="places">
+  <div class="routes">
     <data-table
       v-if="dataLoaded"
-      title="Places"
-      storeName="places"
+      title="Routes"
+      storeName="routes"
       addUrl="add"
       :canEdit="true"
       :canDelete="true"
@@ -19,9 +19,9 @@ import { mapState } from 'vuex'
 
 export default {
   async fetch ({store}) {
-    const {dataLoaded} = store.state.places
+    const {dataLoaded} = store.state.routes
     if (!dataLoaded) {
-      await store.dispatch('places/getCollection')
+      await store.dispatch('routes/getCollection')
     }
   },
   data() {
@@ -36,7 +36,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('places', [
+    ...mapState('routes', [
       'dataLoaded',
       'loading',
       'list',

@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import { getObjectCopy } from '~/assets/utils'
 export default {
   name: 'PageBuilderHead',
   props: {
@@ -84,7 +85,7 @@ export default {
   },
   methods: {
     addBlock(type) {
-      const block = JSON.parse(JSON.stringify(this.blocks.find((block) => block.type === type)))
+      const block = getObjectCopy(this.blocks.find((block) => block.type === type))
       this.$emit('addBlock', block)
       this.dialog = false
     }

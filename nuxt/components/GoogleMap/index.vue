@@ -22,8 +22,12 @@ export default {
     },
     item: {
       type: Object,
-      default: () => ({}),
+      default: null,
     },
+    items: {
+      type: Array,
+      default: null,
+    }
   },
   data() {
     return {
@@ -45,7 +49,14 @@ export default {
     this.map
       .init()
       .then(() => {
-        this.map.setMarkers([this.item])
+        if (this.items) {
+          console.log('this.items:', this.items)
+          this.map.setMarkers(this.items)
+        }
+        if (this.item) {
+          console.log('this.item:', this.item)
+          this.map.setMarkers([this.item])
+        }
       })
   },
   methods: {

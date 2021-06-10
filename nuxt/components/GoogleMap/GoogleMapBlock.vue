@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { getObjectCopy } from '~/assets/utils'
 import { getMarkerScheme } from '~/assets/dbschemes'
 
 export default {
@@ -95,7 +96,7 @@ export default {
   },
   mounted() {
     if (this.incomingMarker) {
-      this.marker = JSON.parse(JSON.stringify(this.incomingMarker))
+      this.marker = getObjectCopy(this.incomingMarker)
     }
     this.showMap = true
   },

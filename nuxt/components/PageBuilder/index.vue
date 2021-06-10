@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { SlickList, SlickItem } from 'vue-slicksort';
+import { SlickList } from 'vue-slicksort'
 
 function getBlockData(name, type, icon = type) {
   return {
@@ -45,8 +45,7 @@ function getBlockData(name, type, icon = type) {
 export default {
   name: 'PageBuilder',
   components: {
-    SlickItem,
-    SlickList
+    SlickList,
   },
   props: {
     incomingBlocks: {

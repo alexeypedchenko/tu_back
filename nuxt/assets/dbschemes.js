@@ -4,6 +4,13 @@ export const getPlaceScheme = () => ({
   pageBlocks: [],
 })
 
+export const getRouteScheme = () => ({
+  ...getDefaultFields(),
+  marker: getMarkerScheme(),
+  markers: [],
+  pageBlocks: [],
+})
+
 export const getDefaultFields = () => ({
   public: false,
   name: 'Object name',
