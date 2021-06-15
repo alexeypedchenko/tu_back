@@ -37,7 +37,7 @@ export default {
   },
   watch: {
     change() {
-      this.map.setMarkers([this.item])
+      this.drawMarkers()
     },
     'map.coordinates'() {
       if (!this.map.coordinates) return
@@ -49,20 +49,21 @@ export default {
     this.map
       .init()
       .then(() => {
-        if (this.items) {
-          console.log('this.items:', this.items)
-          this.map.setMarkers(this.items)
-        }
-        if (this.item) {
-          console.log('this.item:', this.item)
-          this.map.setMarkers([this.item])
-        }
+        this.drawMarkers()
       })
   },
   methods: {
     centeredMap() {
       this.map.centeredMap()
     },
+    drawMarkers() {
+      if (this.items) {
+        this.map.setMarkers(this.items)
+      }
+      if (this.item) {
+        this.map.setMarkers([this.item])
+      }
+    }
   },
 }
 </script>

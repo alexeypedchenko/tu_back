@@ -46,21 +46,23 @@ export class GoogleMap {
   }
 
   initDirections() {
+    https://developers.google.com/maps/documentation/javascript/reference/directions
     this.directionsService = new google.maps.DirectionsService()
     // https://developers.google.com/maps/documentation/javascript/reference/directions#DirectionsRendererOptions
     this.directionsRenderer = new google.maps.DirectionsRenderer({
       suppressMarkers: true, // Подавить рендеринг маркеров.
       // https://developers.google.com/maps/documentation/javascript/reference/polygon#PolylineOptions
-      polylineOptions: {
-        strokeColor: 'blue',
-        zIndex: 1,
-      }
+      // polylineOptions: {
+        // strokeColor: 'blue',
+        // zIndex: 1,
+      // }
     })
-
-    this.directionsRenderer.setMap(this.map)
   }
 
   setWaypointsToDirections(waypts) {
+    console.log('waypts:', waypts)
+    if (!waypts.length) return
+    this.directionsRenderer.setMap(this.map)
     // для отрисовки маршрута, точек на карте должно быть больше 2 и более
     if (waypts.langth < 2) return
 
@@ -90,8 +92,8 @@ export class GoogleMap {
   }
 
   createWaypoint(marker) {
-    const lat = marker.marker.coordinates ? Number.parseInt(marker.marker.coordinates.lat) : marker.getPosition().lat()
-    const lng = marker.marker.coordinates ? Number.parseInt(marker.marker.coordinates.lng) : marker.getPosition().lng()
+    const lat = marker.coordinates ? Number.parseInt(marker.coordinates.lat) : marker.getPosition().lat()
+    const lng = marker.coordinates ? Number.parseInt(marker.coordinates.lng) : marker.getPosition().lng()
     // https://developers.google.com/maps/documentation/javascript/reference/directions#DirectionsWaypoint
     return {
       location: new google.maps.LatLng(lat, lng),
@@ -109,6 +111,7 @@ export class GoogleMap {
     markers.forEach((item) => {
       // создаем маркер
       const marker = this.createMarker(item)
+      if (!marker) return
       // добавляем маркер в массив
       this.markers.push(marker)
       // добавляем новую позицию маркера для центрирования карты
@@ -133,11 +136,13 @@ export class GoogleMap {
     })
 
     this.centeredMap()
-    // this.setWaypointsToDirections(this.markers)
-    // this.map.setZoom(12)
+    if (this.markers.length > 1) {
+      this.setWaypointsToDirections(this.markers)
+    }
   }
 
   createMarker(data, onMap = false) {
+    if (!data) return
     const options = {
       draggable: true,
       position: {
@@ -260,6 +265,9 @@ export class GoogleMap {
   }
 
   clearMarkers() {
+    if(this.directionsRenderer) {
+      this.directionsRenderer.setMap(null);
+    }
     this.clearCluster()
 
     this.markers.forEach((marker, index) => {
@@ -300,7 +308,7 @@ export class GoogleMap {
   }
 
   createCircle() {
-    return new google.maps.Marker({
+    this.circle = new google.maps.Marker({
       zIndex: 2,
       visible: false,
       position: {
@@ -339,7 +347,7 @@ export class GoogleMap {
         .then(() => {
           this.map = new google.maps.Map(this.mapContainer, this.mapOptions)
           this.initDirections()
-          this.circle = this.createCircle()
+          this.createCircle()
           return resolve()
         })
         .catch((error) => {
