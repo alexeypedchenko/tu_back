@@ -1,22 +1,36 @@
+
+export const getMarkerScheme = () => ({
+  public: false,
+  name: 'Marker name',
+  description: 'Marker description',
+  icon: 'https://via.placeholder.com/30x30?text=pin',
+  image: 'https://via.placeholder.com/120x80?text=img-place',
+  coordinates: {
+    lng: '32.07230514',
+    lat: '46.64288927',
+  },
+  placeId: '00000001',
+  ...getFiltersScheme(),
+})
+
 export const getPlaceScheme = () => ({
-  ...getDefaultFields(),
-  marker: getMarkerScheme(),
+  seo: getSeoScheme(),
+  name: 'Place name',
+  description: 'Place description',
+  markerId: '00000001',
   pageBlocks: [],
 })
 
 export const getRouteScheme = () => ({
-  ...getDefaultFields(),
-  marker: getMarkerScheme(),
+  public: false,
+  seo: getSeoScheme(),
   markers: [],
   pageBlocks: [],
+  ...getFiltersScheme(),
 })
 
-export const getDefaultFields = () => ({
-  public: false,
-  name: 'Object name',
+export const getFiltersScheme = () => ({
   type: 'Object type',
-  description: 'Object description',
-  image: 'https://via.placeholder.com/1920x1080?text=img-place',
   town: 'Odessa',
   region: 'Odessa Region',
   tags: [
@@ -26,11 +40,8 @@ export const getDefaultFields = () => ({
   ],
 })
 
-export const getMarkerScheme = () => ({
-  icon: 'https://via.placeholder.com/30x30?text=pin',
-  image: 'https://via.placeholder.com/120x80?text=img-place',
-  coordinates: {
-    lng: '32.07230514',
-    lat: '46.64288927',
-  }
+export const getSeoScheme = () => ({
+  title: 'seo title',
+  description: 'seo description',
+  keywords: 'seo keywords'
 })

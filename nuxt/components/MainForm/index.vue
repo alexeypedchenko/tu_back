@@ -68,34 +68,13 @@ export default {
       type: Boolean,
       default: false,
     },
-    actionName: {
-      type: String,
-      default: '',
-    },
-    object: {
-      type: Object,
-      default: () => ({}),
-    },
   },
   methods: {
-    async submit() {
-      if (this.isUpdate) {
-        await this.$store
-          .dispatch(`${this.actionName}/updateDoc`, this.object)
-          .then(() => this.$toast.success('Данные успешно обновлены!'))
-      } else {
-        await this.$store
-          .dispatch(`${this.actionName}/createDoc`, this.object)
-          .then(() => {
-            this.$toast.success('Новый объект успешно создан!')
-            this.$router.push(this.backUrl)
-          })
-      }
+    submit() {
+      this.$emit('submit')
     },
-    async deleteItem() {
-      await this.$store
-        .dispatch(`${this.actionName}/deleteDoc`, this.object._id)
-        .then(() => this.$router.push(this.backUrl))
+    deleteItem() {
+      this.$emit('delete')
     },
   },
 }

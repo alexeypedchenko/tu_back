@@ -51,16 +51,11 @@
         />
       </template>
       <template v-if="type === 'image'">
-        <FileManager
+        <file-manager
+          :flat="true"
           class="mb-4"
           @input="change"
-        />
-        <v-img
-          contain
-          position="top left"
-          max-height="300"
-          max-width="100%"
-          :src="prop"
+          :preview="prop"
         />
       </template>
     </v-card-text>

@@ -6,7 +6,7 @@
       storeName="places"
       addUrl="add"
       :canEdit="true"
-      :canDelete="true"
+      :canDelete="false"
       :list="list"
       :loading="loading"
       :addedHeaders="headers"
@@ -19,9 +19,9 @@ import { mapState } from 'vuex'
 
 export default {
   async fetch ({store}) {
-    const {dataLoaded} = store.state.places
+    const {dataLoaded} = store.state.markers
     if (!dataLoaded) {
-      await store.dispatch('places/getCollection')
+      await store.dispatch('markers/getCollection')
     }
   },
   data() {
@@ -36,7 +36,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('places', [
+    ...mapState('markers', [
       'dataLoaded',
       'loading',
       'list',

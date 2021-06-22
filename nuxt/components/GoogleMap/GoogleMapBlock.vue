@@ -21,29 +21,16 @@
 
         <file-manager
           class="mb-2"
-          title="Выбрать Изображение окна маркера"
+          title="Изображение окна маркера"
           v-model="marker.image"
-        />
-        <v-img
-          class="mb-5"
-          contain
-          position="top left"
-          max-height="300"
-          max-width="100%"
-          :src="marker.image"
+          :preview="marker.image"
         />
 
         <file-manager
           class="mb-1"
-          title="Выбрать иконку для маркера"
+          title="Иконка маркера"
           v-model="marker.icon"
-        />
-        <v-img
-          contain
-          position="top left"
-          max-height="30"
-          max-width="100%"
-          :src="marker.icon"
+          :preview="marker.icon"
         />
       </v-col>
       <v-col cols="6">
@@ -65,7 +52,7 @@ import { getMarkerScheme } from '~/assets/dbschemes'
 export default {
   name: 'GoogleMapBlock',
   props: {
-    incomingMarker: {
+    incomingData: {
       type: Object,
       default: null,
     }
@@ -78,33 +65,34 @@ export default {
     }
   },
   watch: {
-    'marker.coordinates.lat'() {
+    isChange() {
       this.mapChange = !this.mapChange
-    },
-    'marker.coordinates.lng'() {
-      this.mapChange = !this.mapChange
-    },
-    'marker.icon'() {
-      this.mapChange = !this.mapChange
-    },
-    'marker.image'() {
-      this.mapChange = !this.mapChange
-    },
-    mapChange() {
       this.emitMarker()
+    },
+    incomingData() {
+      this.setIncomingData()
+    }
+  },
+  computed: {
+    isChange() {
+      return JSON.stringify(this.marker)
     }
   },
   mounted() {
-    if (this.incomingMarker) {
-      this.marker = getObjectCopy(this.incomingMarker)
+    if (this.incomingData) {
+      this.setIncomingData()
     }
     this.showMap = true
   },
   methods: {
     emitMarker() {
+      console.log('this.marker:', this.marker)
       this.$emit('input', this.marker)
+    },
+    setIncomingData() {
+      this.marker = getObjectCopy(this.incomingData)
     }
-  }
+  },
 }
 </script>
 

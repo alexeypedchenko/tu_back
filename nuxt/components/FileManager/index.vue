@@ -67,24 +67,38 @@
       />
     </v-dialog>
 
-    <div
-      v-if="title"
-      class="text-subtitle-2 mb-1 file-manager__title"
+    <v-card
+      :flat="flat"
+      :class="{'pa-4 pt-2' : !flat}"
     >
-      {{ title }}:
-    </div>
-    <div class="file-manager__actions">
-      <v-btn
-        @click="open"
-        color="success"
-        text
-      >
-        <v-icon left>
-          mdi-image-plus
-        </v-icon>
-        Выбрать изображение
-      </v-btn>
-    </div>
+      <div class="file-manager__controls">
+        <div
+          v-if="title"
+          class="text-subtitle-2 mb-1 file-manager__title"
+        >
+          {{ title }}:
+        </div>
+        <v-btn
+          color="success"
+          text
+          @click="open"
+        >
+          <v-icon left>
+            mdi-image-plus
+          </v-icon>
+          выбрать
+        </v-btn>
+      </div>
+      <div v-if="preview" class="file-manager__preview mt-4">
+        <v-img
+          contain
+          position="top left"
+          max-height="200"
+          max-width="100%"
+          :src="preview"
+        />
+      </div>
+    </v-card>
   </div>
 </template>
 
@@ -105,6 +119,14 @@ export default {
     multiply: {
       type: Boolean,
       default: false,
+    },
+    flat: {
+      type: Boolean,
+      default: false,
+    },
+    preview: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -259,9 +281,9 @@ export default {
   bottom: 0;
   right: 0;
 }
-.file-manager__actions {
-  & > *:not(:last-child) {
-    margin-right: 16px;
-  }
+.file-manager__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

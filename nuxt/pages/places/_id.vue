@@ -1,30 +1,42 @@
 <template>
-  <forms-place-form
+  <forms-marker-place-form
     backUrl="/places"
-    actionName="places"
     :loading="loading"
-    :list="list"
-    :incomingObject="place"
+    :incomingMarker="marker"
+    :incomingPlace="place"
   />
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   async fetch ({store}) {
-    const {dataLoaded} = store.state.places
-    if (!dataLoaded) {
+    const dataLoadedPlaces = store.state.places.dataLoaded
+    const dataLoadedMarkers = store.state.markers.dataLoaded
+
+    if (!dataLoadedPlaces) {
       await store.dispatch('places/getCollection')
+    }
+    if (!dataLoadedMarkers) {
+      await store.dispatch('markers/getCollection')
     }
   },
   computed: {
-    ...mapState('places', [
-      'loading',
-      'list',
-    ]),
+    loading() {
+      return this.$store.state.places.loading || this.$store.state.markers.loading
+    },
+    markers() {
+      return this.$store.state.markers.list
+    },
+    places() {
+      return this.$store.state.places.list
+    },
+    marker() {
+      const marker = this.markers.find((marker) => marker._id === this.$route.params.id)
+      return marker || null
+    },
     place() {
-      const place = this.list.find((place) => place._id === this.$route.params.id)
+      if (!this.marker) return null
+      const place = this.places.find((place) => place._id === this.marker.placeId)
       return place || null
     },
   },
