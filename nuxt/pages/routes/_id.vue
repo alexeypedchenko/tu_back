@@ -3,9 +3,8 @@
     backUrl="/routes"
     actionName="routes"
     :loading="loading"
-    :list="list"
     :incomingObject="route"
-    :places="places"
+    :markers="markers"
   />
 </template>
 
@@ -15,13 +14,13 @@ import { mapState } from 'vuex'
 export default {
   async fetch ({store}) {
     const routesDataLoaded = store.state.routes.dataLoaded
-    const placesDataLoaded = store.state.places.dataLoaded
+    const markersDataLoaded = store.state.markers.dataLoaded
 
     if (!routesDataLoaded) {
       await store.dispatch('routes/getCollection')
     }
-    if (!placesDataLoaded) {
-      await store.dispatch('places/getCollection')
+    if (!markersDataLoaded) {
+      await store.dispatch('markers/getCollection')
     }
   },
   computed: {
@@ -33,9 +32,9 @@ export default {
       const route = this.list.find((route) => route._id === this.$route.params.id)
       return route || null
     },
-    places() {
-      const places = this.$store.state.places.list
-      return places
+    markers() {
+      const markers = this.$store.state.markers.list
+      return markers
     }
   },
 }

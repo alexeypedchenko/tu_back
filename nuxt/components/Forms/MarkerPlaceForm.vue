@@ -34,11 +34,6 @@
           <v-icon left>mdi-clipboard-text-outline</v-icon>
           SEO
         </v-tab>
-
-        <!-- <v-tab>
-          <v-icon left>mdi-file-document-outline</v-icon>
-          Описание
-        </v-tab> -->
       </v-tabs>
 
       <v-tabs-items class="pa-4" v-model="activeTab">
@@ -138,7 +133,6 @@ export default {
     },
   },
   mounted() {
-    console.log('this.isUpdate:', this.isUpdate)
     if (this.isUpdate) {
       this.setIncomingObjects()
     }

@@ -23,10 +23,15 @@ export const getPlaceScheme = () => ({
 
 export const getRouteScheme = () => ({
   public: false,
-  seo: getSeoScheme(),
+  name: 'Route name',
+  description: 'Route description',
+  image: 'https://via.placeholder.com/120x80?text=img-place',
   markers: [],
-  pageBlocks: [],
-  ...getFiltersScheme(),
+
+  // TODO transfer to another entity
+  // pageBlocks: [],
+  // seo: getSeoScheme(),
+  // ...getFiltersScheme(),
 })
 
 export const getFiltersScheme = () => ({

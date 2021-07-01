@@ -46,7 +46,7 @@ export const actions = {
 
   async createDoc({state, commit, actions, dispatch}, newDoc) {
     commit('loadingStart')
-    await createDoc(collection, newDoc)
+    return createDoc(collection, newDoc)
       .then((id) => {
         // добавим новый элемент в начало массива
         newDoc._id = id
@@ -57,6 +57,7 @@ export const actions = {
             ...state.list
           ]
         })
+        return id
       })
       .catch((err) => console.log('err:', err))
       .finally(() => commit('loadingEnd'))

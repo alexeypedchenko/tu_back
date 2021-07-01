@@ -61,7 +61,7 @@ export default {
         this.map.setMarkers(this.items)
       }
       if (this.item) {
-        this.map.setMarkers([this.item])
+        this.map.setMarkers([this.item.marker])
       }
     }
   },

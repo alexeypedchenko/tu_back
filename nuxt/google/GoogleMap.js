@@ -116,8 +116,8 @@ export class GoogleMap {
       this.markers.push(marker)
       // добавляем новую позицию маркера для центрирования карты
       this.bounds.extend({
-        lat: +item.marker.coordinates.lat,
-        lng: +item.marker.coordinates.lng,
+        lat: +item.coordinates.lat,
+        lng: +item.coordinates.lng,
       })
       // создаем модальное окно маркера
       this.createInfoWindow(marker, item)
@@ -141,19 +141,19 @@ export class GoogleMap {
     }
   }
 
-  createMarker(data, onMap = false) {
-    if (!data) return
+  createMarker(marker, onMap = false) {
+    if (!marker) return
     const options = {
       draggable: true,
       position: {
-        lat: +data.marker.coordinates.lat,
-        lng: +data.marker.coordinates.lng,
+        lat: +marker.coordinates.lat,
+        lng: +marker.coordinates.lng,
       },
       zIndex: 10,
       // https://developers.google.com/maps/documentation/javascript/reference/marker#Icon
       icon: {
-        url: data.marker.icon || this.pin,
-        // url: data.marker.icon || this.pin,
+        url: marker.icon || this.pin,
+        // url: data.icon || this.pin,
         size: new google.maps.Size(30, 30),
         // если изображение меньше или больше 30px, масштабируем до 30
         scaledSize: new google.maps.Size(30, 30),
@@ -284,21 +284,20 @@ export class GoogleMap {
     }
   }
 
-  getInfoWindowTemplate(data) {
+  getInfoWindowTemplate(marker) {
     return `
       <div class="map-window">
-        <!-- href="{item.link}" -->
         <div class="map-window-img">
-          <img src="${data.marker.image}" alt="${data.name}">
+          <img src="${marker.image}" alt="${marker.name}">
         </div>
         <div class="map-window-content">
           <div class="map-window-text">
             <h2 class="map-window-title h5">
-              ${data.name}
+              ${marker.name}
             </h2>
             <p class="map-window-description p2">
               <span>
-                ${data.shortdescription}
+                ${marker.description}
               <span/>
             </p>
           </div>

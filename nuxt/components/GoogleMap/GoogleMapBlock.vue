@@ -2,19 +2,25 @@
   <div class="google-map-block">
     <v-row>
       <v-col cols="6">
+        <v-text-field
+          v-model="marker.name"
+          label="Название места"
+        />
+        <v-text-field
+          v-model="marker.description"
+          label="Описание места"
+        />
         <v-row>
           <v-col>
             <v-text-field
               v-model="marker.coordinates.lat"
               label="Latitude: широта"
-              required
             />
           </v-col>
           <v-col>
             <v-text-field
               v-model="marker.coordinates.lng"
               label="Longitude: долгота"
-              required
             />
           </v-col>
         </v-row>
@@ -96,5 +102,22 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+  .map-window {
+    width: 300px;
+  }
+  .map-window-img {
+    width: 300px;
+    height: 200px;
+    margin-bottom: 10px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .map-window-content {}
+  .map-window-title {}
+  .map-window-text {}
+  .map-window-description {}
 </style>
