@@ -42,6 +42,9 @@ export default {
     // added 'v-application' css class to app wrapper
     '@nuxtjs/vuetify',
   ],
+  vuetify: {
+    customVariables: ['~/assets/variables.scss']
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
