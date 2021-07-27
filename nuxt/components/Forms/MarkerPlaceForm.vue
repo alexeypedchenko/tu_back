@@ -27,6 +27,10 @@
           Карта
         </v-tab>
         <v-tab>
+          <v-icon left>mdi-clipboard-list-outline</v-icon>
+          Фильтры
+        </v-tab>
+        <v-tab>
           <v-icon left>mdi-page-layout-header-footer</v-icon>
           Страница места
         </v-tab>
@@ -40,6 +44,14 @@
         <v-tab-item transition="fade-transition">
           <google-map-block
             :incomingData="marker"
+            v-model="marker"
+          />
+        </v-tab-item>
+
+        <v-tab-item transition="fade-transition">
+          <forms-filters-block
+            :incomingData="marker"
+            :tags="tags"
             v-model="marker"
           />
         </v-tab-item>
@@ -102,6 +114,10 @@ export default {
     loading: {
       type: Boolean,
       default: false,
+    },
+    tags: {
+      type: Array,
+      default: () => ([]),
     },
   },
   data() {

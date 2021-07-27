@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     emitMarker() {
-      console.log('this.marker:', this.marker)
       this.$emit('input', this.marker)
     },
     setIncomingData() {

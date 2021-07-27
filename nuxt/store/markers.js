@@ -14,6 +14,19 @@ export const state = () => ({
   list: [],
 })
 
+export const getters = {
+  getTags(state) {
+    return Array.from(
+      state.list.reduce((acc, val) => {
+        val.tags.forEach((tag) => {
+          acc.add(tag)
+        })
+        return acc
+      }, new Set)
+    )
+  }
+}
+
 export const mutations = {
   loadingStart(state) {
     state.loading = true

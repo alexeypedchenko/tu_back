@@ -4,10 +4,12 @@
     :loading="loading"
     :incomingMarker="marker"
     :incomingPlace="place"
+    :tags="getTags"
   />
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   async fetch ({store}) {
     const dataLoadedPlaces = store.state.places.dataLoaded
@@ -21,6 +23,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('markers', [
+      'getTags'
+    ]),
     loading() {
       return this.$store.state.places.loading || this.$store.state.markers.loading
     },
