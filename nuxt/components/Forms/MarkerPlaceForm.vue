@@ -62,12 +62,24 @@
               Описание страницы
             </h2>
             <v-text-field
+              class="mb-5"
+              v-model="place.slug"
+              label="Название в адресной строке (slug)"
+              hint="Должно быть уникальным!"
+              persistent-hint
+            />
+            <v-text-field
               v-model="place.name"
               label="Название места"
             />
             <v-text-field
               v-model="place.description"
               label="Описание места"
+            />
+            <file-manager
+              title="Изображение места"
+              v-model="place.image"
+              :preview="place.image"
             />
           </v-card>
           <v-card class="pa-4">

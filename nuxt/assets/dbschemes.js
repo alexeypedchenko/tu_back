@@ -16,8 +16,10 @@ export const getMarkerScheme = () => ({
 export const getPlaceScheme = () => ({
   seo: getSeoScheme(),
   name: 'Place name',
+  slug: 'place-name',
   description: 'Place description',
   markerId: '00000001',
+  image: 'https://via.placeholder.com/1024x1080?text=img-place',
   pageBlocks: [],
 })
 
