@@ -174,6 +174,7 @@ export default {
       }
     },
     async update() {
+      this.marker.link = this.place.slug
       await this.$store.dispatch('markers/updateDoc', getObjectCopy(this.marker))
       await this.$store.dispatch('places/updateDoc', getObjectCopy(this.place))
       this.$toast.success('Данные успешно обновлены!')
@@ -190,7 +191,7 @@ export default {
       })
       this.$toast.success('Новые объекты успешно созданы!')
       await this.update()
-      // this.$router.push(this.backUrl)
+      this.$router.push(this.backUrl)
     },
     async deleteItem() {
       await this.$store.dispatch('places/deleteDoc', this.place._id)

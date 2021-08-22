@@ -10,6 +10,7 @@ export const getMarkerScheme = () => ({
     lat: '46.64288927',
   },
   placeId: '00000001',
+  link: 'place-name',
   ...getFiltersScheme(),
 })
 
