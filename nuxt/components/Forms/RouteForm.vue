@@ -30,6 +30,18 @@
           <v-icon left>mdi-map-outline</v-icon>
           Маршрут
         </v-tab>
+        <v-tab>
+          <v-icon left>mdi-clipboard-list-outline</v-icon>
+          Фильтры
+        </v-tab>
+        <v-tab>
+          <v-icon left>mdi-page-layout-header-footer</v-icon>
+          Конструктор страницы
+        </v-tab>
+        <v-tab>
+          <v-icon left>mdi-clipboard-text-outline</v-icon>
+          SEO
+        </v-tab>
       </v-tabs>
 
       <v-tabs-items class="pa-4" v-model="activeTab">
@@ -38,6 +50,10 @@
             <h2 class="text-h4 mb-4">
               Описание маршрута
             </h2>
+            <v-text-field
+              v-model="route.slug"
+              label="Название в адресной строке (slug)"
+            />
             <v-text-field
               v-model="route.name"
               label="Название маршрута"
@@ -58,6 +74,27 @@
             :list="markers"
             :selected="route.markers"
             v-model="route.markers"
+          />
+        </v-tab-item>
+        <v-tab-item transition="fade-transition">
+          <forms-filters-block
+            :incomingData="route"
+            :tags="tags"
+            v-model="route"
+          />
+        </v-tab-item>
+        <v-tab-item transition="fade-transition">
+          <v-card class="pa-4">
+            <page-builder
+              :incomingBlocks="route.pageBlocks"
+              v-model="route.pageBlocks"
+            />
+          </v-card>
+        </v-tab-item>
+        <v-tab-item transition="fade-transition">
+          <main-form-seo-block
+            :incomingData="route.seo"
+            v-model="route.seo"
           />
         </v-tab-item>
       </v-tabs-items>
@@ -87,6 +124,10 @@ export default {
     loading: {
       type: Boolean,
       default: false,
+    },
+    tags: {
+      type: Array,
+      default: () => ([]),
     },
   },
   data() {

@@ -31,10 +31,10 @@ export const getRouteScheme = () => ({
   image: 'https://via.placeholder.com/120x80?text=img-place',
   markers: [],
 
-  // TODO transfer to another entity
-  // pageBlocks: [],
-  // seo: getSeoScheme(),
-  // ...getFiltersScheme(),
+  // ?? TODO transfer to another entity ??
+  pageBlocks: [],
+  seo: getSeoScheme(),
+  ...getFiltersScheme(),
 })
 
 export const getFiltersScheme = () => ({

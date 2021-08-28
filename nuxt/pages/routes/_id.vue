@@ -5,11 +5,12 @@
     :loading="loading"
     :incomingObject="route"
     :markers="markers"
+    :tags="getTags"
   />
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   async fetch ({store}) {
@@ -27,6 +28,9 @@ export default {
     ...mapState('routes', [
       'loading',
       'list',
+    ]),
+    ...mapGetters('markers', [
+      'getTags'
     ]),
     route() {
       const route = this.list.find((route) => route._id === this.$route.params.id)
