@@ -1,13 +1,5 @@
 <template>
   <div class="filters-block">
-    <v-text-field
-      v-model="filters.type"
-      label="type"
-    />
-    <v-text-field
-      v-model="filters.town"
-      label="town"
-    />
     <v-combobox
       v-model="filters.region"
       :items="regions"

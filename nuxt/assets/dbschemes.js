@@ -1,5 +1,6 @@
 
 export const getMarkerScheme = () => ({
+  type: 'marker',
   public: false,
   name: 'Marker name',
   description: 'Marker description',
@@ -15,6 +16,7 @@ export const getMarkerScheme = () => ({
 })
 
 export const getPlaceScheme = () => ({
+  type: 'place',
   seo: getSeoScheme(),
   name: 'Place name',
   slug: 'place-name',
@@ -25,6 +27,7 @@ export const getPlaceScheme = () => ({
 })
 
 export const getRouteScheme = () => ({
+  type: 'route',
   public: false,
   name: 'Route name',
   description: 'Route description',
@@ -38,9 +41,7 @@ export const getRouteScheme = () => ({
 })
 
 export const getFiltersScheme = () => ({
-  type: 'Object type',
-  town: 'Odessa',
-  region: 'Odessa Region',
+  region: '',
   tags: [
     'tag 1',
     'tag 2',
